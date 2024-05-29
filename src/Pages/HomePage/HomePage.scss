@@ -225,3 +225,51 @@
   }
 }
 
+
+
+
+
+
+
+
+@keyframes rainDrop {
+  0% {
+    top: -10%;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    top: 110%;
+    opacity: 0;
+  }
+}
+
+.rain-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.rain-drop {
+  position: absolute;
+  width: 3px;
+  height: 10px;
+  background-color: rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  animation: rainDrop 2s linear infinite;
+}
+
+.rain-drop:nth-child(2n) {
+  animation-duration: 2.5s;
+}
+
+.rain-drop:nth-child(3n) {
+  animation-duration: 2.8s;
+}
