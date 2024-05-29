@@ -1,0 +1,76 @@
+.product-card {
+    background-color: rgba(255, 255, 255, 0.3); 
+    border-radius: 20px;
+    padding: 20px;
+    max-width: 800px;
+    margin: 40px auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    font-family: 'Arial, sans-serif';
+    position: relative;
+  }
+  
+  .product-card__image {
+    width: 100%;
+    border-radius: 10px;
+  }
+  
+  .product-card__title {
+    font-size: 2rem;
+    margin-top: 20px;
+  }
+  
+  .product-card__description,
+  .product-card__included,
+  .product-card__extras,
+  .product-card__location,
+  .product-card__price,
+  .product-card__booking {
+    margin-top: 20px;
+  }
+  
+  .product-card__description h2,
+  .product-card__included h2,
+  .product-card__extras h2,
+  .product-card__location h2,
+  .product-card__price h2,
+  .product-card__booking h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .product-card__description p,
+  .product-card__included ul,
+  .product-card__extras ul,
+  .product-card__location p,
+  .product-card__price p,
+  .product-card__booking p {
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+  
+  .product-card__included ul,
+  .product-card__extras ul {
+    list-style: disc;
+    padding-left: 20px;
+  }
+  
+  .product-card__order-button {
+    // display: block;
+    width: 20%;
+    padding: 8px;
+    margin-left: 70%;
+    background-color: #FCC0BF;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+  }
+  
+  .product-card__order-button:hover {
+    background-color: #e65c50;
+  }
+  
