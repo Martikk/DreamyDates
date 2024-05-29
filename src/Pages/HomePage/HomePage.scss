@@ -234,15 +234,15 @@
 
 @keyframes rainDrop {
   0% {
-    top: -10%;
-    opacity: 0;
+    top: -10%; /* Start above the viewport */
+    opacity: 0; /* Fully transparent at the start */
   }
   10% {
-    opacity: 1;
+    opacity: 1; /* Become fully opaque shortly after starting */
   }
   100% {
-    top: 110%;
-    opacity: 0;
+    top: 110%; /* Move to below the viewport */
+    opacity: 0; /* Become fully transparent again */
   }
 }
 
@@ -259,12 +259,13 @@
 
 .rain-drop {
   position: absolute;
-  width: 3px;
-  height: 10px;
-  background-color: rgba(255, 255, 255, 0.5);
-  opacity: 0;
-  animation: rainDrop 2s linear infinite;
+  width: 2px; /* Narrow width to resemble raindrop */
+  height: 10px; /* Short height */
+  background-color: rgba(255, 255, 255, 0.6); /* Semi-transparent white */
+  animation: rainDrop 2s linear infinite; /* Apply the rainDrop animation */
+  opacity: 0; /* Start fully transparent */
 }
+
 
 .rain-drop:nth-child(2n) {
   animation-duration: 2.5s;

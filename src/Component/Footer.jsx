@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaTimes } from "react-icons/fa";
-import { PiUserListFill } from "react-icons/pi";
 import { CiMenuBurger } from "react-icons/ci";
 import Logo from "../Assets/DreamyDates.svg";
 
@@ -10,7 +9,7 @@ const Footer = () => {
   const handleClick = () => setClick(!click);
 
   const content = (
-    <div className="lg:hidden block absolute top-16 w-full left-0 right-0 backdrop-blur-xl bg-white/30 transition">
+    <div className="lg:hidden block absolute bottom-16 w-full left-0 right-0 backdrop-blur-xl bg-white/30 transition">
       <ul className="text-center text-xl p-20">
         <Link to="/Contact">
           <li className="my-4 py-4 border-b border-slate-800 hover:bg-slate-800 hover:rounded">
@@ -42,11 +41,11 @@ const Footer = () => {
   );
 
   return (
-    <nav>
-      <div className="h-10vh flex justify-between z-50 text-black lg:py-2 px-10 py-4">
+    <footer className="relative">
+      <div className="h-20 flex justify-between z-50 text-black lg:px-10 px-4 py-4">
         <div className="flex items-center flex-1">
-        <Link to="/">
-        <img src={Logo} alt="Dreamy Dates Logo" className="h-8 w-auto min-w-[230px] pr-10"/>
+          <Link to="/">
+            <img src={Logo} alt="Dreamy Dates Logo" className="h-8 w-auto min-w-[230px] pr-10" />
           </Link>
         </div>
         <div className="lg:flex md:flex lg:flex-1 items-center justify-end font-normal hidden">
@@ -77,17 +76,16 @@ const Footer = () => {
                   Flowers
                 </li>
               </Link>
-
             </ul>
           </div>
         </div>
 
         <div>{click && content}</div>
-        <button className="block sm:hidden transition" onClick={handleClick}>
+        <button className="block sm:hidden transition pr-8" onClick={handleClick}>
           {click ? <FaTimes /> : <CiMenuBurger />}
         </button>
       </div>
-    </nav>
+    </footer>
   );
 };
 
