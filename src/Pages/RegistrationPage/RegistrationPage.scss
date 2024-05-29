@@ -1,0 +1,145 @@
+// @import "../../styles/mixin";
+// @import "../../styles/variables";
+  
+//   .registration-container {
+//     margin: 0;
+//     font-family: Arial, sans-serif;
+//     background-color: #000;
+//     color: #e3e3e3;
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     flex-direction: column;
+//     background-color: #121212;
+//     padding: 20px;
+//     border-radius: 8px;
+  
+//     .form-logo {
+//       text-align: center;
+//       margin-bottom: 20px;
+//     }
+  
+//     .form-title {
+//       text-align: center;
+//       margin-bottom: 10px;
+//     }
+  
+//     .form-desc {
+//       text-align: center;
+//       margin-bottom: 20px;
+//     }
+  
+//     .form-elements {
+//       .form-line {
+//         margin-bottom: 15px;
+  
+//         .full-width, .half-width, .three-width {
+//           width: 100%;
+//           display: block;
+//           margin-bottom: 10px;
+//         }
+  
+//         .half-width {
+//           width: 48%;
+//           display: inline-block;
+//           margin-right: 2%;
+//         }
+  
+//         .three-width {
+//           width: 30%;
+//           display: inline-block;
+//           margin-right: 2%;
+//         }
+  
+//         label {
+//           display: block;
+//           margin-bottom: 5px;
+//         }
+  
+//         input, select {
+//           width: 80%;
+//           padding: 10px;
+//           border-radius: 5px;
+//           border: 1px solid #333;
+//           background-color: #1e1e1e;
+//           color: #e3e3e3;
+
+//           @include desktop {
+//             width: 50%;
+//               }
+  
+//           &:focus {
+//             outline: none;
+//             border-color: #6c63ff;
+//           }
+//         }
+  
+//         .checkbox-container {
+//           display: grid;
+//           grid-template-columns: 2fr 0.5fr 0.5fr;
+//           align-items: center;
+//           cursor: pointer;
+
+//           @include desktop {
+//             width: 60%;
+//             padding-left: 24%;
+//             padding-right: 16%;
+//           }
+//           input {
+//             margin-right: 10px;
+//             @include desktop {
+//               margin: 0;
+//             }
+//           }
+  
+//           .checkmark {
+//             width: 20px;
+//             height: 20px;
+//             background-color: #1e1e1e;
+//             border: 1px solid #333;
+//             display: inline-block;
+//             border-radius: 3px;
+//           }
+  
+//           input:checked + .checkmark {
+//             background-color: #6c63ff;
+//           }
+//         }
+  
+//         .right {
+//           text-align: right;
+//         }
+  
+//         .buttons {
+//           text-align: center;
+  
+//           .button {
+//             padding: 10px 20px;
+//             border: none;
+//             border-radius: 5px;
+//             background-color: #6c63ff;
+//             color: white;
+//             cursor: pointer;
+//             transition: background-color 0.3s;
+  
+//             &:hover {
+//               background-color: #594dcf;
+//             }
+//           }
+//         }
+  
+//         .center {
+//           text-align: center;
+//         }
+//       }
+//     }
+//   }
+
+//   .clearfix {
+//     padding-left: 8%;
+//     width: 80%;
+//     @include desktop {
+//       width: 50%;
+//       padding-left: 25%;
+//         }
+//   }

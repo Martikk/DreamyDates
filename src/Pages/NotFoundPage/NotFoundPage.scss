@@ -1,0 +1,50 @@
+.not-found {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background: url('../../Assets/404.svg') no-repeat center center;
+    background-size: cover;
+  
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1;
+    }
+  
+    &__header {
+      position: relative;
+      z-index: 2;
+      color: white;
+      padding-top: 0;
+      margin-top: 0;
+      font-size: 3em;
+    }
+  
+    &__text {
+      position: relative;
+      z-index: 2;
+      color: white;
+      font-size: 1.2em;
+    }
+  
+    &__home-button {
+      position: relative;
+      z-index: 2;
+      padding: 10px 20px;
+      background-color: #ffffff;
+      color: #333;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 1em;
+      margin-top: 20px;
+    }
+  }
+  
