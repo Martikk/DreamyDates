@@ -45,8 +45,7 @@ function Experiences() {
   ];
 
   return (
-    <div className="experiences w-full h-screen bg-center bg-cover"
-    style={{ backgroundImage: `url(${ExperiencesImage})` }}>
+    <div className='experiences'>
 
 
       <h2 className="experiences__title">Just choose an idea, the rest is our task</h2>

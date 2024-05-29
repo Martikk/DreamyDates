@@ -48,7 +48,7 @@ const Nav = () => {
 
   return (
     <nav>
-      <div className="h-10vh flex justify-between z-50 text-black lg:py-5 px-10 py-4">
+      <div className="h-10vh flex justify-between z-50 text-black lg:py-2 px-10 py-4">
         <div className="flex items-center flex-1">
         <Link to="/">
         <img src={Logo} alt="Dreamy Dates Logo" className="h-8 w-auto min-w-[230px] pr-10"/>

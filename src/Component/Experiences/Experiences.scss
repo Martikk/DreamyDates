@@ -1,6 +1,8 @@
 .experiences {
   text-align: center;
-  height: 1200px;
+  // height: 1200px;
+  background: url("../../Assets/Experiences.jpg") no-repeat center center;
+  background-size: cover;
 
   &__title {
     font-size: 2.5rem;
@@ -58,6 +60,6 @@
 
   &:hover {
     transform: scale(1.05);
-    filter: blur(2px); /* Add blur effect */
+    filter: blur(2px);
   }
 }

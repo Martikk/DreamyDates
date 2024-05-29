@@ -1,3 +1,6 @@
+@import "../../styles/mixin";
+@import "../../styles/variables";
+
 .btn {
     display: flex;
     justify-content: center;
@@ -16,10 +19,14 @@
 
 
     position: absolute;
-    top: 80%;
-    left: 5%;
-    width: 392px;
-    height: 87px;
+    top: 82%;
+    left: 30%;
+    @include desktop  {
+      top: 88.5%;
+      left: 7%;
+    }
+    width: 170px;
+    height: 50px;
   }
   
   #container-stars {
@@ -36,7 +43,7 @@
   strong {
     z-index: 2;
     font-family: 'Avalors Personal Use';
-    font-size: 18px;
+    font-size: 12px;
     letter-spacing: 5px;
     color: black;
     text-shadow: 0 0 4px white;
@@ -173,90 +180,48 @@
     }
   }
 
+  
+.HomePage {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.HomePage_phone {
+  &_phone {
     position: absolute;
-    top: 20%;
-    left: 5%;
-}
-
-.HomePage_right-logo {
+    top: 25%;
+    left: 8%;
+    margin: 0;
+    font-size: 1.2em;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+  
+  &_right-logo {
     background: url("../../Assets/DreamyDates.svg") no-repeat center center;
     background-size: contain;
     position: absolute;
-    height: 400px;
-    width: 500px;
-    top: 47%;
-    right: 18%;
+    height: 300px;
+    width: 400px;
+    top: 56%;
+    right: 7%;
+    @include desktop  {
+      height: 400px;
+      width: 500px;
+    }
   }
-  .HomePage_right-text {
+  &_right-text {
     color: black;
     position: absolute;
-    top: 78%;
-    right: 18%;
-    width: 500px;
+    top: 90.5%;
+    right: 9%;
+    width: 385px;
     height: 130px;
     border-radius: 300px/100px;
-    padding: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    backdrop-filter: blur(2px);
-    background-color: rgba(65, 65, 65, 0.308);
-    border: 1px solid rgba(255, 255, 255, 0.089);
     cursor: pointer;
-    transition: all ease 0.3s;
   }
   
-  .HomePage_right-text:hover {
-    box-shadow: 0px 0px 20px 1px #ffbb763f;
-    border: 1px solid rgba(255, 255, 255, 0.454);
-  }
-  
-  .HomePage_right-text .title {
-    font-size: 2rem;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-  }
-  
-  .HomePage_right-text strong {
-    display: block;
-    margin-bottom: 0.5rem;
-  }
-  
-  .HomePage_right-text p {
+  &_right-text p {
     margin: 0;
     font-size: 0.9em;
-    font-weight: 300;
+    font-weight: 500;
     letter-spacing: 0.1em;
   }
-  
-  .HomePage_right-text span {
-    font-size: 0.7rem;
-    font-weight: 300;
-  }
-  
-  .HomePage_right-text span:nth-child(3) {
-    font-weight: 500;
-    margin-right: 0.2rem;
-  }
+}
 
-
-  .HomePage_buttonSection {
-    display: flex;
-  }
