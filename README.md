@@ -6,6 +6,12 @@ Welcome to the official website repository of BranFlex. Visit the live site: [Dr
 
 Enchanting Moments is an online store dedicated to offering a curated selection of organize your date for unforgettable experiences. Users can browse, select, and purchase type of effortlessly, ensuring memorable moments with loved ones.
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./localhost_3000_.png">
+  <source media="(prefers-color-scheme: light)" srcset="./localhost_3000_.png">
+  <img alt="Dreamy Dates Website" srcset="./localhost_3000_.png">
+</picture>
+
 ### Problem
 
 In today's busy world, finding unique and memorable experiences date can be challenging. Many people default to traditional dates, which may lack personal touch and emotional value. Enchanting Moments addresses this by providing a platform where users can easily find and book distinctive experiences, making dating more meaningful and special.
