@@ -1,0 +1,58 @@
+.howWeWork {    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    
+    .howWeWork-page {
+        text-align: center;
+
+
+        &__title {
+            font-size: 36px;
+            font-weight: bold;
+        }
+
+        &__describe {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #000000;
+        }
+
+        &__img {
+            padding-left: 15%;
+            margin-bottom: 20px;
+
+            img {
+                width: 80%;
+                height: auto;
+            }
+        }
+        &__button {
+            margin-top: 20px;
+            padding: 12.5px 30px;
+            border: 0;
+            border-radius: 100px;
+            background-color: #2ba8fb;
+            color: #ffffff;
+            font-weight: bold;
+            transition: all 0.5s;
+            -webkit-transition: all 0.5s;
+        }
+
+        &__button:hover {
+
+            background-color: #2ba8fb;
+            box-shadow: 0 0 20px #6fc5ff50;
+            transform: scale(1.1);
+        }
+
+        &__button:active {
+            background-color: #efc2c1;
+            transition: all 0.25s;
+            -webkit-transition: all 0.25s;
+            box-shadow: none;
+            transform: scale(0.98);
+        }
+    }
+}

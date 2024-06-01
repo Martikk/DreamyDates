@@ -1,8 +1,8 @@
 import React from 'react';
 import './Experiences.scss';
-import ExperiencesImage from "../../Assets/Experiences.jpg";
+// import ExperiencesImage from "../../Assets/Experiences.jpg";
 import PicnicImage from "../../Assets/Picnic.jpg";
-import Footer from "../Footer";
+
 
 function Experiences() {
   const experiences = [
@@ -59,7 +59,6 @@ function Experiences() {
           </div>
         ))}
       </div>
-      <Footer/>
     </div>
   );
 }

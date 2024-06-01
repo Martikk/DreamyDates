@@ -1,0 +1,108 @@
+.feedback-form {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+
+  &__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  &__form {
+    position: relative;
+    background: #B9EBE9;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1001;
+    max-width: 600px;
+    width: 100%;
+  }
+
+  &__close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+  }
+
+  &__title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  &__label {
+    font-size: 16px;
+    margin: 10px 0;
+  }
+
+  &__input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+
+  &__table {
+    width: 100%;
+    margin-bottom: 20px;
+    border-collapse: collapse;
+
+    &-header {
+      font-size: 14px;
+      text-align: center;
+      padding: 10px;
+      background: #B9EBE9;
+    }
+
+    &-cell {
+      text-align: center;
+      padding: 10px;
+
+      &--first-col {
+        text-align: left;
+        font-weight: bold;
+      }
+    }
+  }
+
+  &__textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 20px;
+  }
+
+  &__btn-block {
+    text-align: center;
+  }
+
+  &__button {
+    background-color: #FCC0BF;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  &__button:hover {
+    background-color: #0056b3;
+  }
+}

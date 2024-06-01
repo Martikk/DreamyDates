@@ -1,8 +1,19 @@
 import React from "react";
 import "./ProductCard.scss";
-import productImage from "../../Assets/Picnic.jpg"; // Replace with the actual path to the image
+import productImage from "../../Assets/Picnic.jpg"; 
+import StripeCheckout from 'react-stripe-checkout'; 
 
 const ProductCard = () => {
+  const publishableKey = 'pk_test_51PKcBTRu9pFZqeZ3TWG9CO54MDgkfBxbFN5eJDgjRsM7iYgZUYpFHrA3oGimAh84qO2j60P4GxETYZz9OBXSllwE00y0kCU81J';
+  const price = 200; 
+  const priceForStripe = price * 100; 
+
+  const onToken = token => {
+    console.log(token);
+    alert('Payment Successful');
+
+  };
+
   return (
     <div className="product-card">
       <img
@@ -56,7 +67,19 @@ const ProductCard = () => {
           number] to book and get more information.
         </p>
       </div>
-      <button className="product-card__order-button">Order</button>
+      <StripeCheckout
+        label='Order'
+        name='DreamyDates'
+        billingAddress
+        shippingAddress
+        description={`Your total is $${price}`}
+        amount={priceForStripe}
+        panelLabel='Pay Now'
+        token={onToken}
+        stripeKey={publishableKey}
+      >
+        <button className="product-card__order-button">Order</button>
+      </StripeCheckout>
     </div>
   );
 };
