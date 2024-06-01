@@ -1,14 +1,13 @@
 import React from 'react';
 import './Contact.scss';
 import Nav from "../../Component/Nav";
-import Video1 from "../../Assets/1.mp4";
 
 const Contact = () => {
   return (
     <div className='contact-page'>
       <div className="video-background">
         <video autoPlay loop muted>
-          <source src={Video1} type="video/mp4" />
+          <source src="https://res.cloudinary.com/dzytbkc5l/video/upload/v1717271438/1_tcivi5.mp4" type="video/mp4" />
         </video>
       </div>
       <div className="backdrop-blur-sm p-4 z-10 relative">
@@ -33,12 +32,20 @@ const Contact = () => {
               <input type="text" placeholder="Enter your name" />
             </div>
             <div className="form-group">
+              <label>Company</label>
+              <input type="text" placeholder="Enter your company name" />
+            </div>
+            <div className="form-group">
               <label>Email</label>
               <input type="email" placeholder="olivia@untitledui.com" />
             </div>
             <div className="form-group">
               <label>Phone Number</label>
               <input type="tel" placeholder="+1 (555) 000-0000" />
+            </div>
+            <div className="form-group">
+              <label>Address</label>
+              <input type="text" placeholder="Enter your address" />
             </div>
             <div className="form-group">
               <label>Your Message</label>
