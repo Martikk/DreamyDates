@@ -13,32 +13,32 @@ const Nav = () => {
     <div className="lg:hidden block absolute top-16 w-full left-0 right-0 backdrop-blur-xl bg-white/30 transition">
       <ul className="text-center text-xl p-20">
         <Link to="/Contact-us">
-          <li className="my-4 py-4 border-b border-slate-800 hover:bg-slate-800 hover:rounded">
+          <li className="my-4 py-4 border-b border-teal-300 hover:bg-teal-300 hover:rounded">
             Contact
           </li>
         </Link>
         <Link to="/Dates">
-          <li className="my-4 py-4 border-b border-slate-800 hover:bg-slate-800 hover:rounded">
+        <li className="my-4 py-4 border-b border-teal-300 hover:bg-teal-300 hover:rounded">
             Dates
           </li>
         </Link>
         <Link to="/MarriageProposal">
-          <li className="my-4 py-4 border-b border-slate-800 hover:bg-slate-800 hover:rounded">
+        <li className="my-4 py-4 border-b border-teal-300 hover:bg-teal-300 hover:rounded">
             Marriage proposal
           </li>
         </Link>
         <Link to="/Surprices">
-          <li className="my-4 py-4 border-b border-slate-800 hover:bg-slate-800 hover:rounded">
+        <li className="my-4 py-4 border-b border-teal-300 hover:bg-teal-300 hover:rounded">
             Surprices
           </li>
         </Link>
         <Link to="/Flowers">
-          <li className="my-4 py-4 border-b border-slate-800 hover:bg-slate-800 hover:rounded">
+        <li className="my-4 py-4 border-b border-teal-300 hover:bg-teal-300 hover:rounded">
             Flowers
           </li>
         </Link>
         <Link to="/User">
-          <li className="my-4 py-4 border-b border-slate-800 hover:bg-slate-800 hover:rounded">
+        <li className="my-4 py-4 border-b border-teal-300 hover:bg-teal-300 hover:rounded">
             Account
           </li>
         </Link>

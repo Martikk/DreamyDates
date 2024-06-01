@@ -47,6 +47,8 @@
   }
 
   &__button:hover {
-    background-color: #FFA000;
+    background-color: #B9EBE9;
+    box-shadow: 0 0 20px #6fc5ff50;
+    transform: scale(1.1);
   }
 }

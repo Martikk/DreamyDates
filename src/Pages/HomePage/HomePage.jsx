@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import Nav from "../../Component/Nav";
+import Footer from "../../Component/Footer";
 import "./HomePage.scss";
 import homeImage from "../../Assets/Home.jpg";
 import Experiences from "../../Component/Experiences/Experiences";
 import CategoryCards from "../../Component/CategoryCards/CategoryCards";
 import HowWeWork from "../../Component/HowWeWork/HowWeWork";
-import Footer from "../../Component/Footer";
 import SubmitForm from "../../Component/SubmitForm/SubmitForm";
 import Reviews from "../../Component/Reviews/Reviews";
 

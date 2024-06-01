@@ -1,13 +1,19 @@
-import React from 'react';
-import './Contact.scss';
+import React from "react";
+import "./Contact.scss";
 import Nav from "../../Component/Nav";
+import { MdOutlineMailOutline } from "react-icons/md";
+import { MdSettingsPhone } from "react-icons/md";
+
 
 const Contact = () => {
   return (
-    <div className='contact-page'>
+    <div className="contact-page">
       <div className="video-background">
         <video autoPlay loop muted>
-          <source src="https://res.cloudinary.com/dzytbkc5l/video/upload/v1717271438/1_tcivi5.mp4" type="video/mp4" />
+          <source
+            src="https://res.cloudinary.com/dzytbkc5l/video/upload/v1717271438/1_tcivi5.mp4"
+            type="video/mp4"
+          />
         </video>
       </div>
       <div className="backdrop-blur-sm p-4 z-10 relative">
@@ -17,11 +23,17 @@ const Contact = () => {
         <div className="contact__info">
           <h1>Contact Us</h1>
           <p>
-            Not sure what you need? The team at Square Events will be happy to listen to you and suggest event ideas you hadn’t considered
+            Not sure what you need? Our team at Dream Dates will be happy to
+            listen to you and suggest event ideas you hadn’t considered
           </p>
           <div className="contact__details">
-            <p><img src="path/to/email-icon.png" alt="Email" /> info@squareevents.com</p>
-            <p><img src="path/to/phone-icon.png" alt="Phone" /> Support: (+21) 123 456 586</p>
+            <p>
+              <MdOutlineMailOutline /> info@dreamdates.ca
+            </p>
+            <p>
+            <MdSettingsPhone /> Support: (+21)
+              123 456 586
+            </p>
           </div>
         </div>
         <div className="contact__form">
@@ -32,26 +44,20 @@ const Contact = () => {
               <input type="text" placeholder="Enter your name" />
             </div>
             <div className="form-group">
-              <label>Company</label>
-              <input type="text" placeholder="Enter your company name" />
-            </div>
-            <div className="form-group">
               <label>Email</label>
-              <input type="email" placeholder="olivia@untitledui.com" />
+              <input type="email" placeholder="olivia@gmail.com" />
             </div>
             <div className="form-group">
               <label>Phone Number</label>
-              <input type="tel" placeholder="+1 (555) 000-0000" />
-            </div>
-            <div className="form-group">
-              <label>Address</label>
-              <input type="text" placeholder="Enter your address" />
+              <input type="tel" placeholder="+1 (778) 000-0000" />
             </div>
             <div className="form-group">
               <label>Your Message</label>
               <textarea placeholder="Type your message here"></textarea>
             </div>
-            <button type="submit" className="contact__form-button">Send Message</button>
+            <button type="submit" className="contact__form-button">
+              Send Message
+            </button>
           </form>
         </div>
       </div>

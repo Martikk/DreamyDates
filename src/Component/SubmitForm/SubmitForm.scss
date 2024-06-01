@@ -121,9 +121,18 @@
   text-align: center;
   width: 100%;
 }
+.submit:hover {
+  background-color: #B9EBE9;
+  box-shadow: 0 0 20px #6fc5ff50;
+  transform: scale(1.1);
+}
 
 .submit:active {
-  background-color: #06b;
+  background-color: #efc2c1;
+  transition: all 0.25s;
+  -webkit-transition: all 0.25s;
+  box-shadow: none;
+  transform: scale(0.98);
 }
 
 .close-button {

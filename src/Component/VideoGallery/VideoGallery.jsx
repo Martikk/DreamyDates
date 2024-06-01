@@ -25,7 +25,7 @@ const VideoGallery = () => {
           </div>
         ))}
       </div>
-      <button className="video-gallery__button">More Video</button>
+      <button className="video-gallery__button">More VIDEO</button>
     </div>
   );
 };

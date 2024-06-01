@@ -32,7 +32,7 @@ const Gallery = () => {
 
   return (
     <div className="gallery">
-      <h2 className="gallery__title">ГАЛЕРЕЯ</h2>
+      <h2 className="gallery__title">GALLERY</h2>
       <div className="gallery__grid">
         {images.slice(0, visibleImages).map((image, index) => (
           <div key={index} className="gallery__item">
@@ -41,7 +41,7 @@ const Gallery = () => {
         ))}
       </div>
       {visibleImages < images.length && (
-        <button className="gallery__button" onClick={handleShowMore}>ЕЩЕ ФОТО</button>
+        <button className="gallery__button" onClick={handleShowMore}>MORE PHOTO</button>
       )}
     </div>
   );
