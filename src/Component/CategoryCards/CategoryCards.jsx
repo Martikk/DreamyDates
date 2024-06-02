@@ -1,23 +1,21 @@
-import React from 'react';
-// import { useHistory } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './CategoryCards.scss';
-import marriageProposal from '../../Assets/Picnic.jpg';
-import dates from '../../Assets/Picnic.jpg';
-import surprises from '../../Assets/Picnic.jpg';
-import flowers from '../../Assets/Picnic.jpg';
-
-const categories = [
-  { src: marriageProposal, caption: 'Marriage proposal', link: '/marriage-proposal' },
-  { src: dates, caption: 'Dates', link: '/dates' },
-  { src: surprises, caption: 'Surprises', link: '/surprises' },
-  { src: flowers, caption: 'Flowers', link: '/flowers' },
-];
 
 function CategoryCards() {
-//   const history = useHistory();
+  const [categories, setCategories] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+
+    fetch('http://localhost:3001/categories')
+      .then(response => response.json())
+      .then(data => setCategories(data))
+      .catch(error => console.error('Error fetching categories:', error));
+  }, []);
 
   const handleClick = (link) => {
-    // history.push(link);
+    navigate(link);
   };
 
   return (

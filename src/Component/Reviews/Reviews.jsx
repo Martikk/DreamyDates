@@ -8,7 +8,7 @@ const reviews = [
     rating: 5,
     daysAgo: 2,
     text: 'My partner and I have been to boucherie many times and it was our first time at the',
-    avatar: '../../Assets/Mohan.jpg',
+    avatar: 'https://res.cloudinary.com/dzytbkc5l/image/upload/v1717289347/DreamDate/unnamed_xvfdz9.png',
     platform: 'Google'
   },
   {
@@ -16,7 +16,7 @@ const reviews = [
     rating: 5,
     daysAgo: 2,
     text: 'This restaurant is an absolute gem. In addition to the amazing food and ambiance,',
-    avatar: '../../Assets/Mohan.jpg',
+    avatar: 'https://res.cloudinary.com/dzytbkc5l/image/upload/v1717289430/DreamDate/2022-11-27_c1kezf.png',
     platform: 'Google'
   },
   {
@@ -24,7 +24,7 @@ const reviews = [
     rating: 5,
     daysAgo: 6,
     text: 'As per usual, always going back to one of my favorite spots (great food & drinks)',
-    avatar: '../../Assets/Mohan.jpg',
+    avatar: 'https://res.cloudinary.com/dzytbkc5l/image/upload/v1717289347/DreamDate/unnamed_1_dm93bq.png',
     platform: 'Google'
   }
 ];
@@ -45,7 +45,7 @@ const Reviews = () => {
       <h2 className="reviews-title">What our customers say</h2>
       <div className="reviews-summary">
         <div className="rating-summary">
-          <img src="path/to/google-logo.png" alt="Google Logo" className="google-logo" />
+          <img src="https://res.cloudinary.com/dzytbkc5l/image/upload/v1717289051/DreamDate/Google_2015_logo.svg_xgiius.png" alt="Google Logo" className="google-logo" />
           <div>
             <div className="rating-score">4.7</div>
             <div className="rating-stars">★★★★★</div>
@@ -67,7 +67,7 @@ const Reviews = () => {
             </div>
             <div className="review-text">{review.text}</div>
             <div className="review-footer">
-              <img src="path/to/google-logo.png" alt="Google Logo" className="google-logo-small" />
+              <img src="https://res.cloudinary.com/dzytbkc5l/image/upload/v1717289051/DreamDate/Google_2015_logo.svg_xgiius.png" alt="Google Logo" className="google-logo-small" />
               <div className="review-platform">Posted on {review.platform}</div>
             </div>
           </div>

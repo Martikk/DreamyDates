@@ -1,0 +1,208 @@
+.ExperiencePage {
+  background: url("https://res.cloudinary.com/dzytbkc5l/image/upload/v1717296541/DreamDate/Experiences_rhngvz.jpg") no-repeat center center;
+  background-size: cover;
+  padding: 40px;
+
+  .product-card {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    padding: 20px;
+    max-width: 800px;
+    margin: 40px auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    font-family: 'Arial, sans-serif';
+    position: relative;
+
+    &__image {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    &__title {
+      font-size: 2rem;
+      margin-top: 20px;
+    }
+
+    &__description,
+    &__included,
+    &__extras,
+    &__location,
+    &__price,
+    &__booking {
+      margin-top: 20px;
+
+      h2 {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+      }
+
+      p, ul {
+        font-size: 1rem;
+        margin-bottom: 10px;
+      }
+
+      ul {
+        list-style: disc;
+        padding-left: 20px;
+      }
+    }
+
+    &__order-button {
+      width: 20%;
+      padding: 8px;
+      margin-left: 70%;
+      background-color: #FCC0BF;
+      color: black;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 20px;
+
+      &:hover {
+        background-color: #B9EBE9;
+      }
+    }
+  }
+
+  .info-card {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 40px;
+    border-radius: 10px;
+    flex-wrap: wrap;
+
+    &__section, &__section-order {
+      flex: 1;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px;
+      background-color: #B9EBE9;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin: 40px;
+      min-height: 298px;
+    }
+
+    &__social {
+      text-align: center;
+      background-color: #B9EBE9;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 150px;
+      height: 298px;
+
+      a {
+        margin: 10px 0;
+      }
+
+      img {
+        width: 40px;
+        height: 40px;
+        transition: transform 0.3s ease; 
+  
+        &:hover {
+          transform: scale(1.2);
+        }
+      }
+    }
+
+    &__order-button {
+      background-color: #FCC0BF;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      color: #fff;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-top: 10px;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #e9a09f;
+      }
+    }
+
+    h2 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    strong {
+      font-weight: bold;
+    }
+  }
+
+  .gallery, .video-gallery {
+    text-align: center;
+    padding: 0 60px;
+
+    &__title {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    &__grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    &__item {
+      flex: 1 1 calc(33.333% - 30px); 
+      box-sizing: border-box;
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 8px;
+      min-width: 160px;
+    }
+
+    &__image, &__iframe {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      height: 250px;
+    }
+
+    &__item:hover .gallery__image {
+      transform: scale(1.1);
+      opacity: 0.7;
+    }
+
+    &__button {
+      background-color: #FCC0BF;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      color: #fff;
+      cursor: pointer;
+      border-radius: 4px;
+      margin-top: 20px;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #B9EBE9;
+        box-shadow: 0 0 20px #6fc5ff50;
+        transform: scale(1.1);
+      }
+    }
+  }
+}
