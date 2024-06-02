@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import './FeedbackForm.scss';
+import "./FeedbackForm.scss";
+import Rating from 'react-rating-stars-component';
 
 function FeedbackForm({ onClose }) {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    professional: '',
+    professional: 0,
     comments: ''
   });
 
@@ -19,8 +20,19 @@ function FeedbackForm({ onClose }) {
     });
   };
 
+  const handleRatingChange = (newRating) => {
+    setFormData({
+      ...formData,
+      professional: newRating
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!formData.name || !formData.email || !formData.professional) {
+      toast.error('Please fill out all required fields');
+      return;
+    }
     try {
       const response = await fetch('http://localhost:3001/reviews', {
         method: 'POST',
@@ -54,30 +66,19 @@ function FeedbackForm({ onClose }) {
         <button type="button" className="feedback-form__close-button" onClick={handleFormClose}>×</button>
         <p className="feedback-form__title">Feedback Form</p>
         <p className="feedback-form__label">Name</p>
-        <input name="name" value={formData.name} onChange={handleChange} placeholder="Enter your full name" type="text" className="feedback-form__input" />
+        <input name="name" value={formData.name} onChange={handleChange} placeholder="Enter your full name" type="text" className="feedback-form__input" required />
         <p className="feedback-form__label">Email<span>*</span></p>
-        <input name="email" value={formData.email} onChange={handleChange} placeholder="Enter your email" type="email" className="feedback-form__input" />
+        <input name="email" value={formData.email} onChange={handleChange} placeholder="Enter your email" type="email" className="feedback-form__input" required />
         <p className="feedback-form__label">What is your overall impression?<span>*</span></p>
-        <table className="feedback-form__table">
-          <thead>
-            <tr>
-              <th className="feedback-form__table-header"></th>
-              <th className="feedback-form__table-header">Very Satisfied</th>
-              <th className="feedback-form__table-header">Satisfied</th>
-              <th className="feedback-form__table-header">Unsatisfied</th>
-              <th className="feedback-form__table-header">Very Unsatisfied</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td className="feedback-form__table-cell feedback-form__table-cell--first-col">Professional</td>
-              <td className="feedback-form__table-cell"><input name="professional" value="Very Satisfied" type="radio" onChange={handleChange} /></td>
-              <td className="feedback-form__table-cell"><input name="professional" value="Satisfied" type="radio" onChange={handleChange} /></td>
-              <td className="feedback-form__table-cell"><input name="professional" value="Unsatisfied" type="radio" onChange={handleChange} /></td>
-              <td className="feedback-form__table-cell"><input name="professional" value="Very Unsatisfied" type="radio" onChange={handleChange} /></td>
-            </tr>
-          </tbody>
-        </table>
+        <div className="feedback-form__rating">
+          <Rating
+            count={5}
+            size={24}
+            activeColor="#ffd700"
+            value={formData.professional}
+            onChange={handleRatingChange}
+          />
+        </div>
         <p className="feedback-form__label">Feel free to add any other comments or suggestions:</p>
         <textarea name="comments" value={formData.comments} onChange={handleChange} rows="5" className="feedback-form__textarea"></textarea>
         <div className="feedback-form__btn-block">

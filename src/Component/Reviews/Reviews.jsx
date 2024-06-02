@@ -1,36 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Reviews.scss';
 import FeedbackForm from '../FeedbackForm/FeedbackForm';
 
-const reviews = [
-  {
-    name: 'Danielle MacInnis',
-    rating: 5,
-    daysAgo: 2,
-    text: 'My partner and I have been to boucherie many times and it was our first time at the',
-    avatar: 'https://res.cloudinary.com/dzytbkc5l/image/upload/v1717289347/DreamDate/unnamed_xvfdz9.png',
-    platform: 'Google'
-  },
-  {
-    name: 'Gregory Broner',
-    rating: 5,
-    daysAgo: 2,
-    text: 'This restaurant is an absolute gem. In addition to the amazing food and ambiance,',
-    avatar: 'https://res.cloudinary.com/dzytbkc5l/image/upload/v1717289430/DreamDate/2022-11-27_c1kezf.png',
-    platform: 'Google'
-  },
-  {
-    name: 'Sorana Popa',
-    rating: 5,
-    daysAgo: 6,
-    text: 'As per usual, always going back to one of my favorite spots (great food & drinks)',
-    avatar: 'https://res.cloudinary.com/dzytbkc5l/image/upload/v1717289347/DreamDate/unnamed_1_dm93bq.png',
-    platform: 'Google'
-  }
-];
-
 const Reviews = () => {
+  const [reviews, setReviews] = useState([]);
   const [isFeedbackFormVisible, setFeedbackFormVisible] = useState(false);
+
+  useEffect(() => {
+    fetch('http://localhost:3001/reviews')
+      .then(response => response.json())
+      .then(data => setReviews(data))
+      .catch(error => console.error('Error fetching reviews:', error));
+  }, []);
 
   const handleFeedbackFormOpen = () => {
     setFeedbackFormVisible(true);
@@ -61,15 +42,11 @@ const Reviews = () => {
               <img src={review.avatar} alt={`${review.name} avatar`} className="avatar" />
               <div>
                 <div className="review-name">{review.name}</div>
-                <div className="review-rating">★★★★★</div>
-                <div className="review-time">{review.daysAgo} days ago</div>
+                <div className="review-rating">{'★'.repeat(review.professional)}</div>
+                <div className="review-time">Posted on {review.platform}</div>
               </div>
             </div>
-            <div className="review-text">{review.text}</div>
-            <div className="review-footer">
-              <img src="https://res.cloudinary.com/dzytbkc5l/image/upload/v1717289051/DreamDate/Google_2015_logo.svg_xgiius.png" alt="Google Logo" className="google-logo-small" />
-              <div className="review-platform">Posted on {review.platform}</div>
-            </div>
+            <div className="review-text">{review.comments}</div>
           </div>
         ))}
       </div>
