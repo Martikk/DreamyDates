@@ -5,6 +5,7 @@ import NotFoundPage from "./Pages/NotFoundPage/NotFoundPage";
 import ExperiencePage from "./Pages/ExperiencePage/ExperiencePage";
 import Contact from './Pages/Contact/Contact';
 import Flowers from './Pages/Flowers/Flowers';
+import Dates from './Pages/Dates/Dates';
 
 function App() {
     return (
@@ -14,6 +15,7 @@ function App() {
                     <Route path="/" element={<HomePage />} />
                     <Route path="/experience/:id" element={<ExperiencePage />} />
                     <Route path="/Flowers" element={<Flowers />} />
+                    <Route path="/Dates" element={<Dates />} />
                     <Route path="/Contact-us" element={<Contact />} />
                     <Route path="*" element={<NotFoundPage />} />
                 </Routes>

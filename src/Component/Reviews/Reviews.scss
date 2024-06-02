@@ -74,6 +74,9 @@
   .reviews-list {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
   }
   
   .review-card {
@@ -86,6 +89,7 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-start;
+    min-width: 200px;
   }
   
   .review-header {
