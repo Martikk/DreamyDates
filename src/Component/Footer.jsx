@@ -26,7 +26,7 @@ const Footer = () => {
             Marriage proposal
           </li>
         </Link>
-        <Link to="/Surprices">
+        <Link to="/surprises">
           <li className="my-4 py-4 border-b border-teal-300 hover:bg-teal-300 hover:rounded">
             Surprices
           </li>
@@ -70,7 +70,7 @@ const Footer = () => {
                   Proposal
                 </li>
               </Link>
-              <Link to="/Surprices">
+              <Link to="/surprises">
                 <li className="hover:text-fuchsia-600 transition border-b-2 border-slate-900 hover:border-fuchsia-600 cursor-pointer">
                   Surprices
                 </li>
