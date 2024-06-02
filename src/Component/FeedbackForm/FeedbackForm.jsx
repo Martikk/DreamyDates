@@ -4,7 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import "./FeedbackForm.scss";
 import Rating from 'react-rating-stars-component';
 
-function FeedbackForm({ onClose }) {
+function FeedbackForm({ onClose, onSubmitSuccess }) {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -43,6 +43,7 @@ function FeedbackForm({ onClose }) {
       });
       if (response.ok) {
         toast.success('Feedback submitted successfully!');
+        onSubmitSuccess(); // Call the callback to refresh reviews
         setTimeout(onClose, 2000); // Delay closing form to allow user to see toast
       } else {
         toast.error('Failed to submit feedback');

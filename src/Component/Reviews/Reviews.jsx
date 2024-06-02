@@ -6,11 +6,18 @@ const Reviews = () => {
   const [reviews, setReviews] = useState([]);
   const [isFeedbackFormVisible, setFeedbackFormVisible] = useState(false);
 
+  const fetchReviews = async () => {
+    try {
+      const response = await fetch('http://localhost:3001/reviews');
+      const data = await response.json();
+      setReviews(data);
+    } catch (error) {
+      console.error('Error fetching reviews:', error);
+    }
+  };
+
   useEffect(() => {
-    fetch('http://localhost:3001/reviews')
-      .then(response => response.json())
-      .then(data => setReviews(data))
-      .catch(error => console.error('Error fetching reviews:', error));
+    fetchReviews();
   }, []);
 
   const handleFeedbackFormOpen = () => {
@@ -19,6 +26,7 @@ const Reviews = () => {
 
   const handleFeedbackFormClose = () => {
     setFeedbackFormVisible(false);
+    fetchReviews(); // Refresh reviews when the form is closed
   };
 
   return (
@@ -50,7 +58,7 @@ const Reviews = () => {
           </div>
         ))}
       </div>
-      {isFeedbackFormVisible && <FeedbackForm onClose={handleFeedbackFormClose} />}
+      {isFeedbackFormVisible && <FeedbackForm onClose={handleFeedbackFormClose} onSubmitSuccess={fetchReviews} />}
     </div>
   );
 }
