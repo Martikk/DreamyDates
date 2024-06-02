@@ -1,0 +1,89 @@
+.Surprises-page {
+    text-align: center;
+    background: url("../../Assets/Experiences.jpg") no-repeat center center;
+    background-size: cover;
+  
+    &__title {
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+    }
+  
+    &__grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+  
+    }
+  
+    &__card {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      border-radius: 20px 20px 0 0;
+      overflow: hidden;
+      text-align: left;
+      width: 400px;
+      // height: 500px;
+  
+      &-title {
+        font-size: 1.25rem;
+        margin: 1rem 0;
+      }
+  
+      &__description {
+        font-size: 1rem;
+        padding: 0 1rem;
+        margin-bottom: 1rem;
+        padding-bottom: 20px;
+      }
+  
+      &__price {
+        font-size: 1rem;
+        font-weight: bold;
+        padding: 0 1rem 1rem;
+  
+  
+      }
+  
+      &__image {
+        width: 100%;
+        height: 200px;
+      }
+    }
+  }
+  
+  .experiences__price {
+    margin: 20px 0 10px 26%;
+    width: 170px;
+    border: 0;
+    border-radius: 100px;
+    font-weight: bold;
+    transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+  
+    &:hover {
+      background-color: #B9EBE9;
+      box-shadow: 0 0 20px #6fc5ff50;
+      transform: scale(1.1);
+    }
+    &:active {
+      background-color: #efc2c1;
+      transition: all 0.25s;
+      -webkit-transition: all 0.25s;
+      box-shadow: none;
+      transform: scale(0.98);
+  }
+  }
+  
+  
+  .experiences__card img {
+    cursor: pointer;
+    transition: transform 0.2s;
+  
+    &:hover {
+      transform: scale(1.05);
+      filter: blur(2px);
+    }
+  }
+  
