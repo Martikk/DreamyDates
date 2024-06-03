@@ -26,7 +26,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "npm run prebuild && react-scripts build",
+    "prebuild": "if [ \"$IGNORE_BUILD\" = \"true\" ]; then echo 'Ignoring build because IGNORE_BUILD is set to true'; exit 0; fi",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -51,6 +52,7 @@
   "devDependencies": {
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.38",
-    "tailwindcss": "^3.4.3"
+    "tailwindcss": "^3.4.3",
+    "@babel/plugin-proposal-private-property-in-object": "^7.14.5"
   }
 }
