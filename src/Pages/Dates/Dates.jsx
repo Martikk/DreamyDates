@@ -12,8 +12,19 @@ function Dates() {
 
   useEffect(() => {
     const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:3001";
-    fetch(`${apiUrl}/experiences`)
-      .then((response) => response.json())
+    const apiKey = process.env.REACT_APP_API_KEY;
+
+    fetch(`${apiUrl}/experiences`, {
+      headers: {
+        'x-api-key': apiKey
+      }
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok ' + response.statusText);
+        }
+        return response.json();
+      })
       .then((data) => {
         console.log('Fetched data:', data); // Log the fetched data
         const filteredExperiences = data.filter(exp => {

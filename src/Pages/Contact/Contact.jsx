@@ -6,7 +6,6 @@ import "./Contact.scss";
 import Nav from "../../Component/Nav";
 import { MdOutlineMailOutline, MdSettingsPhone } from "react-icons/md";
 
-
 const Contact = () => {
   const [formData, setFormData] = useState({
     firstname: '',
@@ -68,10 +67,12 @@ const Contact = () => {
 
     try {
       const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3001';
+      const apiKey = process.env.REACT_APP_API_KEY;
       const response = await fetch(`${apiUrl}/form_submissions`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey // Include the API key in the headers
         },
         body: JSON.stringify(formData)
       });

@@ -35,11 +35,13 @@ function FeedbackForm({ onClose, onSubmitSuccess }) {
     }
     try {
       const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3001';
+      const apiKey = process.env.REACT_APP_API_KEY; // Ensure this is set in your environment variables
       
       const response = await fetch(`${apiUrl}/reviews`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey // Include the API key in the headers
         },
         body: JSON.stringify(formData)
       });

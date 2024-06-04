@@ -8,9 +8,19 @@ function CategoryCards() {
 
   useEffect(() => {
     const apiUrl = process.env.REACT_APP_API_URL;
+    const apiKey = process.env.REACT_APP_API_KEY;
 
-    fetch(`${apiUrl}/categories`)
-      .then(response => response.json())
+    fetch(`${apiUrl}/categories`, {
+      headers: {
+        'x-api-key': apiKey
+      }
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
       .then(data => setCategories(data))
       .catch(error => console.error('Error fetching categories:', error));
   }, []);

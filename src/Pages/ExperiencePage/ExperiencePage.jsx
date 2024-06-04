@@ -16,8 +16,20 @@ const ExperiencePage = () => {
   const [isFormVisible, setFormVisible] = useState(false); // State to manage the visibility of the form
 
   useEffect(() => { // Fetch experience data when the component mounts or the ID changes
-    fetch(`${process.env.REACT_APP_API_URL}/experiences/${id}`)
-      .then(response => response.json())
+    const apiUrl = process.env.REACT_APP_API_URL;
+    const apiKey = process.env.REACT_APP_API_KEY;
+
+    fetch(`${apiUrl}/experiences/${id}`, {
+      headers: {
+        'x-api-key': apiKey
+      }
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
       .then(data => {
         console.log("Fetched data:", data); // Log the fetched data
         setExperienceData(data); // Update the state with the fetched data

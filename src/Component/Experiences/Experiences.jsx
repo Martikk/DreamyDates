@@ -10,16 +10,18 @@ function Experiences() {
 
   const apiUrl = process.env.REACT_APP_API_URL;
   const publishableKey = process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY;
-
-  // console.log('API URL:', apiUrl);  // Ensure this prints the correct URL
-  // console.log('Stripe Publishable Key:', publishableKey);  // Ensure this prints the correct key
+  const apiKey = process.env.REACT_APP_API_KEY; // Assuming you set this in your environment variables
 
   useEffect(() => {
-    fetch(`${apiUrl}/experiences`)
+    fetch(`${apiUrl}/experiences`, {
+      headers: {
+        'x-api-key': apiKey 
+      }
+    })
       .then((response) => response.json())
       .then((data) => setExperiences(data))
       .catch((error) => console.error('Error fetching experiences:', error));
-  }, [apiUrl]);
+  }, [apiUrl, apiKey]);
 
   const handleToken = (token, addresses) => {
     console.log(token, addresses);

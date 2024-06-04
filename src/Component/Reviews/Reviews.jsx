@@ -9,7 +9,13 @@ const Reviews = () => {
   const fetchReviews = async () => {
     try {
       const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3001';
-      const response = await fetch(`${apiUrl}/reviews`);
+      const apiKey = process.env.REACT_APP_API_KEY; // Ensure this is set in your environment variables
+      
+      const response = await fetch(`${apiUrl}/reviews`, {
+        headers: {
+          'x-api-key': apiKey // Include the API key in the headers
+        }
+      });
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
