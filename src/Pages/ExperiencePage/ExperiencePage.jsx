@@ -16,7 +16,7 @@ const ExperiencePage = () => {
   const [isFormVisible, setFormVisible] = useState(false); // State to manage the visibility of the form
 
   useEffect(() => { // Fetch experience data when the component mounts or the ID changes
-    fetch(`http://localhost:3001/experiences/${id}`)
+    fetch(`${process.env.REACT_APP_API_URL}/experiences/${id}`)
       .then(response => response.json())
       .then(data => {
         console.log("Fetched data:", data); // Log the fetched data
