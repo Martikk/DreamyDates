@@ -2,7 +2,7 @@
 
 ## Overview
 
-Welcome to the official website repository of BranFlex. Visit the live site: [Dreamy Dates](https://main.dnd5cet41cwqo.amplifyapp.com/).
+Welcome to the official website repository of BranFlex. Visit the live site: [Dreamy Dates](https://dreamydates.ca).
 
 Enchanting Moments is an online store dedicated to offering a curated selection of organize your date for unforgettable experiences. Users can browse, select, and purchase type of effortlessly, ensuring memorable moments with loved ones.
 
