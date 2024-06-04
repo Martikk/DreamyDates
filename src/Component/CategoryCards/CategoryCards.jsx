@@ -7,8 +7,9 @@ function CategoryCards() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const apiUrl = process.env.REACT_APP_API_URL;
 
-    fetch('http://localhost:3001/categories')
+    fetch(`${apiUrl}/categories`)
       .then(response => response.json())
       .then(data => setCategories(data))
       .catch(error => console.error('Error fetching categories:', error));

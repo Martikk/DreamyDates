@@ -11,7 +11,8 @@ function MarriageProposal() {
   const [isFormVisible, setFormVisible] = useState(false);
 
   useEffect(() => {
-    fetch("http://localhost:3001/experiences")
+    const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:3001";
+    fetch(`${apiUrl}/experiences`)
       .then((response) => response.json())
       .then((data) => {
         console.log('Fetched data:', data); // Log the fetched data

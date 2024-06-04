@@ -9,7 +9,8 @@ function Flowers() {
     const publishableKey = process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY; 
 
     useEffect(() => {
-        fetch('http://localhost:3001/flowers') 
+        const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:3001";
+        fetch(`${apiUrl}/flowers`)
             .then(response => response.json())
             .then(data => setFlowers(data)) 
             .catch(error => console.error('Error fetching flowers:', error)); 
