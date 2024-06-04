@@ -1,19 +1,19 @@
 import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./Contact.scss";
 import Nav from "../../Component/Nav";
 import { MdOutlineMailOutline, MdSettingsPhone } from "react-icons/md";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
-    firstname: '',
-    email: '',
-    phone: '',
-    message: ''
+    firstname: "",
+    email: "",
+    phone: "",
+    message: "",
   });
-  
+
   const [errors, setErrors] = useState({});
 
   const navigate = useNavigate(); // Initialize useNavigate
@@ -22,34 +22,34 @@ const Contact = () => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value
+      [name]: value,
     });
   };
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     if (!formData.firstname.trim()) {
-      newErrors.firstname = 'Full name is required';
+      newErrors.firstname = "Full name is required";
     }
     if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
+      newErrors.email = "Email is required";
     } else {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(formData.email)) {
-        newErrors.email = 'Invalid email address';
+        newErrors.email = "Invalid email address";
       }
     }
     if (!formData.phone.trim()) {
-      newErrors.phone = 'Phone number is required';
+      newErrors.phone = "Phone number is required";
     } else {
       const phoneRegex = /^[0-9]{10,}$/;
       if (!phoneRegex.test(formData.phone)) {
-        newErrors.phone = 'Invalid phone number';
+        newErrors.phone = "Invalid phone number";
       }
     }
     if (!formData.message.trim()) {
-      newErrors.message = 'Message is required';
+      newErrors.message = "Message is required";
     }
 
     setErrors(newErrors);
@@ -59,35 +59,35 @@ const Contact = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
-      toast.error('Please fill in all required fields');
+      toast.error("Please fill in all required fields");
       return;
     }
 
     try {
-      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3001';
+      const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:3001";
       const apiKey = process.env.REACT_APP_API_KEY;
       const response = await fetch(`${apiUrl}/form_submissions`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': apiKey // Include the API key in the headers
+          "Content-Type": "application/json",
+          "x-api-key": apiKey, // Include the API key in the headers
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
       });
       if (response.ok) {
-        toast.success('Message sent successfully!');
-        setFormData({ firstname: '', email: '', phone: '', message: '' });
+        toast.success("Message sent successfully!");
+        setFormData({ firstname: "", email: "", phone: "", message: "" });
         setTimeout(() => {
-          navigate('/'); // Redirect to home page after success message
+          navigate("/"); // Redirect to home page after success message
         }, 2000); // Delay to allow the user to see the toast message
       } else {
-        toast.error('Failed to send message');
+        toast.error("Failed to send message");
       }
     } catch (error) {
-      console.error('Error sending message:', error);
-      toast.error('Failed to send message');
+      console.error("Error sending message:", error);
+      toast.error("Failed to send message");
     }
   };
 
@@ -95,7 +95,13 @@ const Contact = () => {
     <div className="contact-page">
       <ToastContainer />
       <div className="video-background">
-        <video autoPlay loop muted preload="auto">
+        <video
+          className="video-background__video"
+          autoPlay
+          loop
+          muted
+          preload="auto"
+        >
           <source
             src="https://res.cloudinary.com/dzytbkc5l/video/upload/v1717271438/1_tcivi5.mp4"
             type="video/mp4"
@@ -126,23 +132,50 @@ const Contact = () => {
           <form onSubmit={handleSubmit}>
             <div className="form-group">
               <label>Full Name</label>
-              <input type="text" name="firstname" placeholder="Enter your name" value={formData.firstname} onChange={handleChange} />
-              {errors.firstname && <span className="error">{errors.firstname}</span>}
+              <input
+                type="text"
+                name="firstname"
+                placeholder="Enter your name"
+                value={formData.firstname}
+                onChange={handleChange}
+              />
+              {errors.firstname && (
+                <span className="error">{errors.firstname}</span>
+              )}
             </div>
             <div className="form-group">
               <label>Email</label>
-              <input type="email" name="email" placeholder="olivia@gmail.com" value={formData.email} onChange={handleChange} />
+              <input
+                type="email"
+                name="email"
+                placeholder="olivia@gmail.com"
+                value={formData.email}
+                onChange={handleChange}
+              />
               {errors.email && <span className="error">{errors.email}</span>}
             </div>
             <div className="form-group">
               <label>Phone Number</label>
-              <input type="tel" name="phone" placeholder="+1 (778) 000-0000" value={formData.phone} onChange={handleChange} />
+              <input
+                type="tel"
+                name="phone"
+                placeholder="+1 (778) 000-0000"
+                value={formData.phone}
+                onChange={handleChange}
+              />
               {errors.phone && <span className="error">{errors.phone}</span>}
             </div>
             <div className="form-group">
               <label>Your Message</label>
-              <textarea name="message" placeholder="Type your message here" value={formData.message} onChange={handleChange}></textarea>
-              {errors.message && <span className="error">{errors.message}</span>}
+              <textarea
+                name="message"
+                placeholder="Type your message here"
+                value={formData.message}
+                onChange={handleChange}
+              ></textarea>
+              {errors.message && (
+                <span className="error">{errors.message}</span>
+              )}
             </div>
             <button type="submit" className="contact__form-button">
               Send Message
