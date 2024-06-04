@@ -217,10 +217,6 @@ To add animations, follow these steps:
 2. Apply the appropriate CSS classes or keyframes.
 3. Use JavaScript or React hooks to trigger the animation based on user interactions or state changes.
 
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
 ---
 
 Feel free to explore, contribute, and create enchanting moments for everyone!
