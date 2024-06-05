@@ -200,7 +200,7 @@ strong {
     background-size: contain;
     position: absolute;
     height: 300px;
-    width: 400px;
+    width: 350px;
     top: 56%;
     right: 7%;
 
@@ -223,9 +223,16 @@ strong {
 
   &_right-text p {
     margin: 0;
-    font-size: 0.9em;
+    font-size: 0.7em;
     font-weight: 500;
     letter-spacing: 0.1em;
+    padding-left: 9%;
+
+    @include desktop {
+    font-size: 0.9em;
+    font-weight: 500;
+    padding-left: 0%;
+    }
   }
 }
 
