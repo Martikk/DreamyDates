@@ -23,20 +23,17 @@ function CategoryCards() {
     })();
   }, []);
 
-  const handleClick = (link) => {
-    if (!link) return;
-    navigate(link);
-  };
+  const handleClick = (link) => link && navigate(link);
 
   if (loading) return <div className="category-cards">Loading…</div>;
   if (err) return <div className="category-cards error">{err}</div>;
 
   return (
     <div className="category-cards">
-      {categories.map((category, i) => (
-        <div key={category.id ?? i} className="category-card" onClick={() => handleClick(category.link)}>
-          <img src={category.src} alt={category.caption ?? category.title ?? "Category"} className="category-image" />
-          <p className="category-caption">{category.caption ?? category.title}</p>
+      {categories.map((c, i) => (
+        <div key={c.id ?? i} className="category-card" onClick={() => handleClick(c.link)}>
+          <img src={c.src} alt={c.caption ?? c.title ?? "Category"} className="category-image" />
+          <p className="category-caption">{c.caption ?? c.title}</p>
         </div>
       ))}
     </div>
