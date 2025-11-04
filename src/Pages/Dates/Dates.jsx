@@ -1,107 +1,130 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from "react-router-dom";
-import "./Dates.scss";
-import StripeCheckout from "react-stripe-checkout";
-import SubmitForm from "../../Component/SubmitForm/SubmitForm";
-import Nav from "../../Component/Nav";
-import Footer from "../../Component/Footer";
+import React, { useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
+import './Dates.scss';
+import StripeCheckout from 'react-stripe-checkout';
+import SubmitForm from '../../Component/SubmitForm/SubmitForm';
+import Nav from '../../Component/Nav';
+import Footer from '../../Component/Footer';
 
-function Dates() {
+function safeParseCategories(raw) {
+  // Приходит как ["Dates", ...] ИЛИ как '["Dates","..."]' ИЛИ вообще мусор
+  try {
+    if (Array.isArray(raw)) return raw;
+    if (typeof raw === 'string') {
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed : [];
+    }
+    return [];
+  } catch {
+    return [];
+  }
+}
+
+export default function Dates() {
   const [experiences, setExperiences] = useState([]);
   const [isFormVisible, setFormVisible] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [err, setErr] = useState('');
+
+  // Паблик-ключ Stripe можно держать в клиенте
+  const publishableKey = import.meta?.env?.VITE_STRIPE_PUBLISHABLE_KEY
+    || process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY
+    || '';
 
   useEffect(() => {
-    const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:3001";
-    const apiKey = process.env.REACT_APP_API_KEY;
+    const ac = new AbortController();
+    const load = async () => {
+      setLoading(true);
+      setErr('');
+      try {
+        // ВАЖНО: идём в серверную функцию — никаких ключей в браузере
+        const res = await fetch('/api/experiences', { signal: ac.signal });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
 
-    fetch(`${apiUrl}/experiences`, {
-      headers: {
-        'x-api-key': apiKey
-      }
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok ' + response.statusText);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log('Fetched data:', data); // Log the fetched data
-        const filteredExperiences = data.filter(exp => {
-          try {
-            console.log('Categories before checking:', exp.categories); // Log categories before checking
-            const categories = Array.isArray(exp.categories) ? exp.categories : JSON.parse(exp.categories);
-            console.log('Categories after parsing/checking:', categories); // Log categories after parsing/checking
-            return categories.includes("Dates");
-          } catch (error) {
-            console.error("Error checking categories:", error);
-            return false;
-          }
+        const filtered = (Array.isArray(data) ? data : []).filter((exp) => {
+          const cats = safeParseCategories(exp?.categories);
+          return cats.map((c) => String(c).toLowerCase()).includes('dates');
         });
-        setExperiences(filteredExperiences);
-      })
-      .catch((error) => console.error("Error fetching experiences:", error));
+
+        setExperiences(filtered);
+      } catch (e) {
+        if (e.name !== 'AbortError') setErr(e.message || 'Failed to load');
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
+    return () => ac.abort();
   }, []);
 
   const handleToken = (token, addresses) => {
-    console.log(token, addresses);
-    alert("Payment Successful");
+    console.log('Stripe token:', token, addresses);
+    alert('Payment Successful'); // под реальный backend webhook — позже
   };
 
-  // const handleFormOpen = () => {
-  //   setFormVisible(true);
-  // };
+  const grid = useMemo(() => (
+    <div className="experiences__grid">
+      {experiences.map((experience) => (
+        <div className="experiences__card" key={experience.id ?? experience.title}>
+          <Link to={`/experience/${experience.id}`}>
+            <img
+              src={experience.imageUrl}
+              alt={experience.title}
+              className="experiences__image"
+              loading="lazy"
+            />
+          </Link>
+          <h3 className="experiences__card-title">{experience.title}</h3>
+          <p className="experiences__description">{experience.description}</p>
 
-  const handleFormClose = () => {
-    setFormVisible(false);
-  };
-
-  const publishableKey = process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY;
+          {publishableKey ? (
+            <StripeCheckout
+              name="DreamyDates"
+              billingAddress
+              shippingAddress
+              description={`Your total is $${experience.price}`}
+              amount={Number(experience.price) * 100}
+              token={handleToken}
+              stripeKey={publishableKey}
+            >
+              <button className="experiences__price">
+                Price from ${experience.price}
+              </button>
+            </StripeCheckout>
+          ) : (
+            <button className="experiences__price" disabled title="Payment temporarily unavailable">
+              Price from ${experience.price}
+            </button>
+          )}
+        </div>
+      ))}
+    </div>
+  ), [experiences, publishableKey]);
 
   return (
     <div className="Dates-page">
       <div className="backdrop-blur-sm p-4 z-10 relative">
-        <Nav /> 
+        <Nav />
       </div>
+
       <div className="experiences">
-        {isFormVisible && <SubmitForm onClose={handleFormClose} />}
+        {isFormVisible && <SubmitForm onClose={() => setFormVisible(false)} />}
+
         <h2 className="experiences__title">
           Just choose an idea, the rest is our task
         </h2>
-        <div className="experiences__grid">
-          {experiences.map((experience, index) => (
-            <div className="experiences__card" key={index}>
-              <Link to={`/experience/${experience.id}`}>
-                <img
-                  src={experience.imageUrl}
-                  alt={experience.title}
-                  className="experiences__image"
-                />
-              </Link>
-              <h3 className="experiences__card-title">{experience.title}</h3>
-              <p className="experiences__description">{experience.description}</p>
-              <StripeCheckout
-                name="DreamyDates"
-                billingAddress
-                shippingAddress
-                description={`Your total is $${experience.price}`}
-                amount={experience.price * 100}
-                token={handleToken}
-                stripeKey={publishableKey}
-              >
-                <button className="experiences__price">
-                  Price from {experience.price}$
-                </button>
-              </StripeCheckout>
-            </div>
-          ))}
-        </div>
+
+        {loading && <div className="experiences__loading">Loading…</div>}
+        {err && !loading && (
+          <div className="experiences__error">Couldn’t load experiences: {err}</div>
+        )}
+        {!loading && !err && grid}
       </div>
+
       <div className="backdrop-blur-sm p-4 z-10 relative">
-        <Footer /> 
+        <Footer />
       </div>
     </div>
   );
 }
-
-export default Dates;
