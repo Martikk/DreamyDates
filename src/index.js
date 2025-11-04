@@ -1,21 +1,41 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { HelmetProvider } from 'react-helmet-async';
 import App from './App';
-
-
+import './index.css';
 import LogRocket from 'logrocket';
-if (process.env.NODE_ENV === 'production') {
-  LogRocket.init('0eqphi/martik');
+LogRocket.init('0eqphi/martik');
+
+function ensureRoot() {
+  let el = document.getElementById('root');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'root';
+    document.body.appendChild(el);
+  }
+  return el;
 }
 
-const container = document.getElementById('root');
-const root = ReactDOM.createRoot(container);
+function mount() {
+  const container = ensureRoot();
 
-root.render(
-  <React.StrictMode>
-    <HelmetProvider>
+  if (!window.__APP_ROOT__) {
+    window.__APP_ROOT__ = ReactDOM.createRoot(container);
+  }
+
+  window.__APP_ROOT__.render(
+    <React.StrictMode>
       <App />
-    </HelmetProvider>
-  </React.StrictMode>
-);
+    </React.StrictMode>
+  );
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', mount);
+} else {
+  mount();
+}
+
+// Только CRA/Webpack HMR
+if (typeof module !== 'undefined' && module.hot) {
+  module.hot.accept();
+}
