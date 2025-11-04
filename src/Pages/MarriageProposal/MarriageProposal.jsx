@@ -48,9 +48,9 @@ function MarriageProposal() {
     alert("Payment Successful");
   };
 
-  const handleFormOpen = () => {
-    setFormVisible(true);
-  };
+  // const handleFormOpen = () => {
+  //   setFormVisible(true);
+  // };
 
   const handleFormClose = () => {
     setFormVisible(false);
