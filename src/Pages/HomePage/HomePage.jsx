@@ -9,7 +9,6 @@ import CategoryCards from "../../Component/CategoryCards/CategoryCards";
 import HowWeWork from "../../Component/HowWeWork/HowWeWork";
 import SubmitForm from "../../Component/SubmitForm/SubmitForm";
 import Reviews from "../../Component/Reviews/Reviews";
-import 'react-toastify/dist/ReactToastify.css';
 
 function HomePage() {
   const [isFormVisible, setFormVisible] = useState(false);

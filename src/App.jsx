@@ -1,13 +1,15 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import HomePage from './Pages/HomePage/HomePage';
-import NotFoundPage from "./Pages/NotFoundPage/NotFoundPage";
-import ExperiencePage from "./Pages/ExperiencePage/ExperiencePage";
+import NotFoundPage from './Pages/NotFoundPage/NotFoundPage';
+import ExperiencePage from './Pages/ExperiencePage/ExperiencePage';
 import Contact from './Pages/Contact/Contact';
 import Flowers from './Pages/Flowers/Flowers';
 import Dates from './Pages/Dates/Dates';
 import MarriageProposal from './Pages/MarriageProposal/MarriageProposal';
 import Surprises from './Pages/Surprises/Surprises';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
@@ -22,7 +24,11 @@ function App() {
         <Route path="/contact-us" element={<Contact />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
+
+      {/* Toasts */}
+      <ToastContainer position="top-right" autoClose={3000} newestOnTop />
     </BrowserRouter>
   );
 }
+
 export default App;
