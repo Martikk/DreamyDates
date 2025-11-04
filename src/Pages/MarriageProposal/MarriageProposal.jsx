@@ -1,107 +1,155 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from "react-router-dom";
-import "./MarriageProposal.scss";
-import StripeCheckout from "react-stripe-checkout";
-import SubmitForm from "../../Component/SubmitForm/SubmitForm";
-import Nav from "../../Component/Nav";
-import Footer from "../../Component/Footer";
+// src/Pages/MarriageProposal/MarriageProposal.jsx
+import React, { useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
+import './MarriageProposal.scss';
+import StripeCheckout from 'react-stripe-checkout';
+import SubmitForm from '../../Component/SubmitForm/SubmitForm';
+import Nav from '../../Component/Nav';
+import Footer from '../../Component/Footer';
 
-function MarriageProposal() {
+const FALLBACK_IMG =
+  'https://res.cloudinary.com/dzytbkc5l/image/upload/v1762283491/DreamDate/404_kmeiro.svg';
+
+function safeCategories(raw) {
+  try {
+    if (Array.isArray(raw)) return raw;
+    if (typeof raw === 'string') {
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed : [];
+    }
+    return [];
+  } catch {
+    return [];
+  }
+}
+
+function toNumber(x, def = 0) {
+  const n = Number(x);
+  return Number.isFinite(n) ? n : def;
+}
+
+export default function MarriageProposal() {
   const [experiences, setExperiences] = useState([]);
   const [isFormVisible, setFormVisible] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [err, setErr] = useState('');
+
+  // Публичный ключ Stripe (может быть пустым — тогда кнопка disabled)
+  const publishableKey = process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY || '';
 
   useEffect(() => {
-    const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:3001";
-    const apiKey = process.env.REACT_APP_API_KEY; // Add this line to get the API key
+    const ac = new AbortController();
 
-    fetch(`${apiUrl}/experiences`, {
-      headers: {
-        'x-api-key': apiKey // Include the API key in the headers
+    (async () => {
+      setLoading(true);
+      setErr('');
+      try {
+        // ходим через Netlify-функцию-прокси
+        const res = await fetch('/api/experiences', { signal: ac.signal });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+
+        const arr = Array.isArray(data) ? data : [];
+
+        const filtered = arr
+          .filter((exp) => {
+            const cats = safeCategories(exp?.categories)
+              .map((c) => String(c).trim().toLowerCase());
+            return cats.includes('marriage proposal'); // фильтр категории
+          })
+          .map((exp, i) => {
+            // нормализация полей
+            const id = exp.id ?? exp._id ?? i;
+            const title = exp.title ?? exp.name ?? 'Experience';
+            const description = exp.description ?? '';
+            const imageUrl = exp.imageUrl ?? exp.img ?? FALLBACK_IMG;
+            const price = toNumber(exp.price, 0);
+            return { id, title, description, imageUrl, price };
+          });
+
+        setExperiences(filtered);
+      } catch (e) {
+        if (e.name !== 'AbortError') setErr(e.message || 'Failed to load');
+      } finally {
+        setLoading(false);
       }
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok ' + response.statusText);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log('Fetched data:', data); // Log the fetched data
-        const filteredExperiences = data.filter(exp => {
-          try {
-            console.log('Categories before checking:', exp.categories); // Log categories before checking
-            const categories = Array.isArray(exp.categories) ? exp.categories : JSON.parse(exp.categories);
-            console.log('Categories after parsing/checking:', categories); // Log categories after parsing/checking
-            return categories.includes("Marriage proposal");
-          } catch (error) {
-            console.error("Error checking categories:", error);
-            return false;
-          }
-        });
-        setExperiences(filteredExperiences);
-      })
-      .catch((error) => console.error("Error fetching experiences:", error));
+    })();
+
+    return () => ac.abort();
   }, []);
 
   const handleToken = (token, addresses) => {
-    console.log(token, addresses);
-    alert("Payment Successful");
+    // TODO: отправить token на свой бек для создания PaymentIntent/charge
+    console.log('Stripe token:', token, addresses);
+    alert('Payment Successful');
   };
 
-  // const handleFormOpen = () => {
-  //   setFormVisible(true);
-  // };
+  const grid = useMemo(() => (
+    <div className="experiences__grid">
+      {experiences.map((experience) => (
+        <div className="experiences__card" key={experience.id}>
+          <Link to={`/experience/${experience.id}`}>
+            <img
+              src={experience.imageUrl || FALLBACK_IMG}
+              alt={experience.title}
+              className="experiences__image"
+              loading="lazy"
+            />
+          </Link>
 
-  const handleFormClose = () => {
-    setFormVisible(false);
-  };
+          <h3 className="experiences__card-title">{experience.title}</h3>
+          <p className="experiences__description">{experience.description}</p>
 
-  const publishableKey = process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY;
+          {publishableKey ? (
+            <StripeCheckout
+              name="DreamyDates"
+              billingAddress
+              shippingAddress
+              description={`Your total is $${experience.price}`}
+              amount={Math.round(toNumber(experience.price, 0) * 100)}
+              token={handleToken}
+              stripeKey={publishableKey}
+            >
+              <button className="experiences__price">
+                Price from ${experience.price}
+              </button>
+            </StripeCheckout>
+          ) : (
+            <button
+              className="experiences__price"
+              disabled
+              title="Payments temporarily unavailable"
+            >
+              Price from ${experience.price}
+            </button>
+          )}
+        </div>
+      ))}
+    </div>
+  ), [experiences, publishableKey]);
 
   return (
     <div className="MarriageProposal-page">
       <div className="backdrop-blur-sm p-4 z-10 relative">
-        <Nav /> 
+        <Nav />
       </div>
+
       <div className="experiences">
-        {isFormVisible && <SubmitForm onClose={handleFormClose} />}
+        {isFormVisible && <SubmitForm onClose={() => setFormVisible(false)} />}
         <h2 className="experiences__title">
           Just choose an idea, the rest is our task
         </h2>
-        <div className="experiences__grid">
-          {experiences.map((experience, index) => (
-            <div className="experiences__card" key={index}>
-              <Link to={`/experience/${experience.id}`}>
-                <img
-                  src={experience.imageUrl}
-                  alt={experience.title}
-                  className="experiences__image"
-                />
-              </Link>
-              <h3 className="experiences__card-title">{experience.title}</h3>
-              <p className="experiences__description">{experience.description}</p>
-              <StripeCheckout
-                name="DreamyDates"
-                billingAddress
-                shippingAddress
-                description={`Your total is $${experience.price}`}
-                amount={experience.price * 100}
-                token={handleToken}
-                stripeKey={publishableKey}
-              >
-                <button className="experiences__price">
-                  Price from {experience.price}$
-                </button>
-              </StripeCheckout>
-            </div>
-          ))}
-        </div>
+
+        {loading && <div className="experiences__loading">Loading…</div>}
+        {err && !loading && (
+          <div className="experiences__error">Couldn’t load experiences: {err}</div>
+        )}
+        {!loading && !err && grid}
       </div>
+
       <div className="backdrop-blur-sm p-4 z-10 relative">
-        <Footer /> 
+        <Footer />
       </div>
     </div>
   );
 }
-
-export default MarriageProposal;
