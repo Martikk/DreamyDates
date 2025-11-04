@@ -10,22 +10,19 @@ import MarriageProposal from './Pages/MarriageProposal/MarriageProposal';
 import Surprises from './Pages/Surprises/Surprises';
 
 function App() {
-    return (
-        <BrowserRouter>
-            <div className="App">
-                <Routes>
-                    <Route path="/" element={<HomePage />} />
-                    <Route path="/experience/:id" element={<ExperiencePage />} />
-                    <Route path="/Flowers" element={<Flowers />} />
-                    <Route path="/Dates" element={<Dates />} />
-                    <Route path="/MarriageProposal" element={<MarriageProposal />} />
-                    <Route path="/Surprises" element={<Surprises />} />
-                    <Route path="/Contact-us" element={<Contact />} />
-                    <Route path="*" element={<NotFoundPage />} />
-                </Routes>
-            </div>
-        </BrowserRouter>
-    );
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/experience/:id" element={<ExperiencePage />} />
+        <Route path="/flowers" element={<Flowers />} />
+        <Route path="/dates" element={<Dates />} />
+        <Route path="/marriage-proposal" element={<MarriageProposal />} />
+        <Route path="/surprises" element={<Surprises />} />
+        <Route path="/contact-us" element={<Contact />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
-
 export default App;
