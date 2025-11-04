@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./CategoryCards.scss";
-import { getCategories } from "../lib/api";
+import { getCategories } from "../../lib/api";
 
 function CategoryCards() {
   const [categories, setCategories] = useState([]);
