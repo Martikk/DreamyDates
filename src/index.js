@@ -1,26 +1,48 @@
-// index.js
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-// (опц.) LogRocket, стили и т.д.
+// import './index.css';
+// import LogRocket from 'logrocket';
+// LogRocket.init('0eqphi/martik');
 
-const container = document.getElementById('root');
-if (!container) throw new Error('No #root element found');
-
-// Кладём root в глобал, чтобы не создавать заново при повторном исполнении модуля (HMR/дубликаты)
-let root = window.__APP_ROOT__;
-if (!root) {
-  root = ReactDOM.createRoot(container);
-  window.__APP_ROOT__ = root;
+function ensureRoot() {
+  let el = document.getElementById('root');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'root';
+    document.body.appendChild(el);
+  }
+  return el;
 }
 
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+function mount() {
+  const container = ensureRoot();
 
-// (Vite) поддержка HMR, безопасно:
-if (import.meta && import.meta.hot) {
+  // Создаём root только один раз (устойчиво к повторному выполнению)
+  if (!window.__APP_ROOT__) {
+    window.__APP_ROOT__ = ReactDOM.createRoot(container);
+  }
+
+  window.__APP_ROOT__.render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  );
+}
+
+// Ждём готовности DOM (устранит ранние гонки)
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', mount);
+} else {
+  mount();
+}
+
+/** HMR (кросс-совместимо) */
+// Vite
+if (typeof import !== 'undefined' && typeof import.meta !== 'undefined' && import.meta.hot) {
   import.meta.hot.accept();
+}
+// CRA/Webpack
+if (typeof module !== 'undefined' && module.hot) {
+  module.hot.accept();
 }

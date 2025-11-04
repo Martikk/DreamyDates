@@ -1,12 +1,15 @@
-<!-- Canonical -->
+<!-- Canonical & hreflang -->
 <link rel="canonical" href="https://dreamydates.ca/" />
 <link rel="alternate" href="https://dreamydates.ca/" hreflang="en-CA" />
+<link rel="alternate" href="https://dreamydates.ca/" hreflang="x-default" />
+
+<!-- Indexing -->
+<meta name="robots" content="index,follow,max-image-preview:large" />
 <meta name="referrer" content="origin-when-cross-origin" />
 
 <!-- Basic SEO -->
 <title>Dreamy Dates — Romantic Experiences, Proposals & Surprises in Vancouver</title>
 <meta name="description" content="Curated romantic experiences, marriage proposals, surprises, flowers, and more across Vancouver. Book in minutes — we handle the rest." />
-<meta name="keywords" content="romantic date Vancouver, marriage proposal, surprise planning, romantic picnic, Kitsilano, Capilano Bridge, Vancouver Lookout" />
 
 <!-- Open Graph -->
 <meta property="og:type" content="website" />
@@ -14,6 +17,8 @@
 <meta property="og:title" content="Dreamy Dates — Romantic Experiences in Vancouver" />
 <meta property="og:description" content="Book curated dates, proposals, and surprises across Vancouver. We set up everything — you enjoy the moment." />
 <meta property="og:image" content="https://res.cloudinary.com/dzytbkc5l/image/upload/v1717286681/DreamDate/RomanticDinner_pnuoo1.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
 <meta property="og:site_name" content="Dreamy Dates" />
 <meta property="og:locale" content="en_CA" />
 
@@ -22,17 +27,21 @@
 <meta name="twitter:title" content="Dreamy Dates — Romantic Experiences in Vancouver" />
 <meta name="twitter:description" content="Curated dates & proposals. We plan — you celebrate." />
 <meta name="twitter:image" content="https://res.cloudinary.com/dzytbkc5l/image/upload/v1717286681/DreamDate/KitsilanoBeach_srxwf7.png" />
+<meta name="twitter:site" content="@dreamydates" />
 
-<!-- PWA/Theming -->
+<!-- PWA / Icons -->
 <meta name="theme-color" content="#111827" />
 <link rel="icon" href="%PUBLIC_URL%/Logo.png" />
 <link rel="apple-touch-icon" href="%PUBLIC_URL%/Logo.png" />
+<link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 
-<!-- Performance hints -->
+<!-- Performance -->
 <link rel="preconnect" href="https://res.cloudinary.com" crossorigin />
 <link rel="preconnect" href="https://dreamydates-7102c8296fc9.herokuapp.com" crossorigin />
+<link rel="dns-prefetch" href="https://res.cloudinary.com" />
+<link rel="dns-prefetch" href="https://dreamydates-7102c8296fc9.herokuapp.com" />
 
-<!-- Organization & WebSite JSON-LD -->
+<!-- Organization JSON-LD -->
 <script type="application/ld+json">
 {
   "@context":"https://schema.org",
@@ -54,6 +63,7 @@
 }
 </script>
 
+<!-- WebSite JSON-LD -->
 <script type="application/ld+json">
 {
   "@context":"https://schema.org",
