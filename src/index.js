@@ -18,7 +18,6 @@ function ensureRoot() {
 function mount() {
   const container = ensureRoot();
 
-  // Создаём root только один раз (устойчиво к повторному выполнению)
   if (!window.__APP_ROOT__) {
     window.__APP_ROOT__ = ReactDOM.createRoot(container);
   }
@@ -30,19 +29,13 @@ function mount() {
   );
 }
 
-// Ждём готовности DOM (устранит ранние гонки)
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', mount);
 } else {
   mount();
 }
 
-/** HMR (кросс-совместимо) */
-// Vite
-if (typeof import !== 'undefined' && typeof import.meta !== 'undefined' && import.meta.hot) {
-  import.meta.hot.accept();
-}
-// CRA/Webpack
+// CRA/Webpack HMR only (без Vite)
 if (typeof module !== 'undefined' && module.hot) {
   module.hot.accept();
 }
