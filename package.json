@@ -33,7 +33,8 @@
     "build": "npm run prebuild && react-scripts build",
     "prebuild": "if [ \"$IGNORE_BUILD\" = \"true\" ]; then echo 'Ignoring build because IGNORE_BUILD is set to true'; exit 0; fi",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "generate-sitemap": "node generate-sitemap.js"
   },
   "eslintConfig": {
     "extends": [
@@ -57,6 +58,7 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.14.5",
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.38",
+    "sitemap": "^9.0.0",
     "tailwindcss": "^3.4.3"
   }
 }
