@@ -35,7 +35,7 @@ if (document.readyState === 'loading') {
   mount();
 }
 
-// CRA/Webpack HMR only (без Vite)
+// Только CRA/Webpack HMR
 if (typeof module !== 'undefined' && module.hot) {
   module.hot.accept();
 }
