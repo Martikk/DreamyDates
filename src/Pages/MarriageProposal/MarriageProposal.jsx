@@ -34,31 +34,32 @@ export default function MarriageProposal() {
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState('');
 
-  // Публичный ключ Stripe (может быть пустым — тогда кнопка disabled)
+  // Публичный ключ Stripe (только клиентский)
   const publishableKey = process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY || '';
 
   useEffect(() => {
     const ac = new AbortController();
+    let mounted = true;
 
     (async () => {
       setLoading(true);
       setErr('');
       try {
-        // ходим через Netlify-функцию-прокси
-        const res = await fetch('/api/experiences', { signal: ac.signal });
+        // Бьёмся в прокси-функцию Netlify; бек может сразу фильтровать по категории
+        const res = await fetch('/api/experiences?category=marriage%20proposal', {
+          signal: ac.signal
+        });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
 
         const arr = Array.isArray(data) ? data : [];
-
         const filtered = arr
           .filter((exp) => {
             const cats = safeCategories(exp?.categories)
               .map((c) => String(c).trim().toLowerCase());
-            return cats.includes('marriage proposal'); // фильтр категории
+            return cats.includes('marriage proposal'); // резервная фильтрация на клиенте
           })
           .map((exp, i) => {
-            // нормализация полей
             const id = exp.id ?? exp._id ?? i;
             const title = exp.title ?? exp.name ?? 'Experience';
             const description = exp.description ?? '';
@@ -67,66 +68,81 @@ export default function MarriageProposal() {
             return { id, title, description, imageUrl, price };
           });
 
-        setExperiences(filtered);
+        if (mounted) setExperiences(filtered);
       } catch (e) {
-        if (e.name !== 'AbortError') setErr(e.message || 'Failed to load');
+        // В dev из-за StrictMode эффект монт/размонт срабатывает дважды — игнорируем AbortError
+        if (e.name !== 'AbortError' && mounted) setErr(e.message || 'Failed to load');
       } finally {
-        setLoading(false);
+        if (mounted) setLoading(false);
       }
     })();
 
-    return () => ac.abort();
+    return () => {
+      mounted = false;
+      ac.abort();
+    };
   }, []);
 
-  const handleToken = (token, addresses) => {
-    // TODO: отправить token на свой бек для создания PaymentIntent/charge
+  const handleToken = async (token, addresses) => {
+    // Здесь только клиент. Реальный чардж делай с /.netlify/functions/charge
     console.log('Stripe token:', token, addresses);
     alert('Payment Successful');
   };
 
-  const grid = useMemo(() => (
-    <div className="experiences__grid">
-      {experiences.map((experience) => (
-        <div className="experiences__card" key={experience.id}>
-          <Link to={`/experience/${experience.id}`}>
-            <img
-              src={experience.imageUrl || FALLBACK_IMG}
-              alt={experience.title}
-              className="experiences__image"
-              loading="lazy"
-            />
-          </Link>
-
-          <h3 className="experiences__card-title">{experience.title}</h3>
-          <p className="experiences__description">{experience.description}</p>
-
-          {publishableKey ? (
-            <StripeCheckout
-              name="DreamyDates"
-              billingAddress
-              shippingAddress
-              description={`Your total is $${experience.price}`}
-              amount={Math.round(toNumber(experience.price, 0) * 100)}
-              token={handleToken}
-              stripeKey={publishableKey}
-            >
-              <button className="experiences__price">
-                Price from ${experience.price}
-              </button>
-            </StripeCheckout>
-          ) : (
-            <button
-              className="experiences__price"
-              disabled
-              title="Payments temporarily unavailable"
-            >
-              Price from ${experience.price}
-            </button>
-          )}
+  const grid = useMemo(() => {
+    if (!experiences.length) {
+      return (
+        <div className="experiences__empty">
+          No experiences in “Marriage proposal” yet.
         </div>
-      ))}
-    </div>
-  ), [experiences, publishableKey]);
+      );
+    }
+
+    return (
+      <div className="experiences__grid">
+        {experiences.map((experience) => (
+          <div className="experiences__card" key={String(experience.id)}>
+            <Link to={`/experience/${experience.id}`}>
+              <img
+                src={experience.imageUrl || FALLBACK_IMG}
+                alt={experience.title}
+                className="experiences__image"
+                loading="lazy"
+                onError={(e) => { e.currentTarget.src = FALLBACK_IMG; }}
+              />
+            </Link>
+
+            <h3 className="experiences__card-title">{experience.title}</h3>
+            <p className="experiences__description">{experience.description}</p>
+
+            {publishableKey ? (
+              <StripeCheckout
+                name="DreamyDates"
+                billingAddress
+                shippingAddress
+                description={`Your total is $${toNumber(experience.price, 0)}`}
+                amount={Math.round(toNumber(experience.price, 0) * 100)}
+                token={handleToken}
+                stripeKey={publishableKey}
+              >
+                <button className="experiences__price">
+                  Price from ${toNumber(experience.price, 0)}
+                </button>
+              </StripeCheckout>
+            ) : (
+              <button
+                className="experiences__price"
+                disabled
+                title="Payments temporarily unavailable"
+              >
+                Price from ${toNumber(experience.price, 0)}
+              </button>
+            )}
+          </div>
+        ))}
+      </div>
+    );
+  }, [experiences, publishableKey]);
 
   return (
     <div className="MarriageProposal-page">
