@@ -1,7 +1,7 @@
 [build]
   command = "npm run build"
   publish = "build"
-
+  functions = "netlify/functions"
 [functions]
   directory = "netlify/functions"
 
@@ -9,4 +9,10 @@
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/api"
+  status = 200
+
+# SPA fallback — решает 404 на refresh
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
   status = 200
