@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+// src/Pages/ExperiencePage/ExperiencePage.jsx
+import React, { useEffect, useState, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import Nav from '../../Component/Nav';
 import Footer from '../../Component/Footer';
@@ -6,187 +7,270 @@ import StripeCheckout from 'react-stripe-checkout';
 import SubmitForm from '../../Component/SubmitForm/SubmitForm';
 import './ExperiencePage.scss';
 
-const ExperiencePage = () => {
-  const { id } = useParams(); // Get the experience ID from the URL parameters
-  const [experienceData, setExperienceData] = useState({ // Initialize state to store experience data
-    experience: null,
-    socialLinks: [],
-    contactInfo: []
-  });
-  const [isFormVisible, setFormVisible] = useState(false); // State to manage the visibility of the form
+const FALLBACK_IMG =
+  'https://res.cloudinary.com/dzytbkc5l/image/upload/v1762283491/DreamDate/404_kmeiro.svg';
 
-  useEffect(() => { // Fetch experience data when the component mounts or the ID changes
-    const apiUrl = process.env.REACT_APP_API_URL;
-    const apiKey = process.env.REACT_APP_API_KEY;
+const publishableKey = process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY || '';
 
-    fetch(`${apiUrl}/experiences/${id}`, {
-      headers: {
-        'x-api-key': apiKey
+function toNumber(x, def = 0) {
+  const n = Number(x);
+  return Number.isFinite(n) ? n : def;
+}
+
+function safeArray(v) {
+  try {
+    if (Array.isArray(v)) return v;
+    if (typeof v === 'string') {
+      const parsed = JSON.parse(v);
+      return Array.isArray(parsed) ? parsed : [];
+    }
+    return [];
+  } catch {
+    return [];
+  }
+}
+
+export default function ExperiencePage() {
+  const { id } = useParams();
+  const [isFormVisible, setFormVisible] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [err, setErr] = useState('');
+  const [exp, setExp] = useState(null);
+  const [socialLinks, setSocial] = useState([]);
+  const [contactInfo, setContacts] = useState([]);
+
+  useEffect(() => {
+    const ac = new AbortController();
+    (async () => {
+      setLoading(true);
+      setErr('');
+      try {
+        // идём через Netlify Functions
+        const res = await fetch(`/api/experiences/${id}`, { signal: ac.signal });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+
+        // сервер может вернуть как {experience, ...} так и сам объект
+        const e = data.experience ?? data;
+
+        const normalized = {
+          id: e.id ?? e._id ?? id,
+          title: e.title ?? e.name ?? 'Experience',
+          description: e.description ?? '',
+          imageUrl: e.imageUrl ?? e.img ?? FALLBACK_IMG,
+          included: safeArray(e.included),
+          extras: safeArray(e.extras),
+          location: e.location ?? '',
+          price: toNumber(e.price, 0),
+          booking: e.booking ?? '',
+          images: safeArray(e.images),
+          videos: safeArray(e.videos),
+          details: {
+            thisMonthPrice: e?.details?.thisMonthPrice ?? '',
+            ordered: e?.details?.ordered ?? '',
+            duration: e?.details?.duration ?? '',
+            note: e?.details?.note ?? ''
+          }
+        };
+
+        setExp(normalized);
+        setSocial(safeArray(data.socialLinks ?? e.socialLinks));
+        setContacts(safeArray(data.contactInfo ?? e.contactInfo));
+      } catch (e) {
+        if (e.name !== 'AbortError') setErr(e.message || 'Failed to load');
+      } finally {
+        setLoading(false);
       }
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log("Fetched data:", data); // Log the fetched data
-        setExperienceData(data); // Update the state with the fetched data
-      })
-      .catch(error => console.error('Error fetching experience:', error)); // Log any errors
+    })();
+    return () => ac.abort();
   }, [id]);
 
-  const handleToken = token => { // Handle the Stripe payment token
-    console.log(token);
-    alert('Payment Successful'); // Show a success message
+  const priceCents = useMemo(() => Math.round(toNumber(exp?.price, 0) * 100), [exp]);
+
+  const handleToken = (token) => {
+    console.log('Stripe token:', token);
+    alert('Payment Successful'); // подключишь серверный charge позднее
   };
 
-  const handleFormOpen = () => { // Open the form
-    setFormVisible(true);
-  };
-
-  const handleFormClose = () => { // Close the form
-    setFormVisible(false);
-  };
-
-  const publishableKey = process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY; // Stripe publishable key from environment variables
-
-  if (!experienceData.experience) { // Show loading message if experience data is not yet loaded
-    return <div>Loading...</div>;
-  }
-
-  const { experience, socialLinks, contactInfo } = experienceData; // Destructure data from state
-  const priceForStripe = experience.price * 100; // Convert price to cents for Stripe
+  if (loading) return <div className="xp-loading">Loading…</div>;
+  if (err) return <div className="xp-error">Couldn’t load: {err}</div>;
+  if (!exp) return <div className="xp-error">Experience not found</div>;
 
   return (
     <div className="ExperiencePage">
-      {isFormVisible && <SubmitForm onClose={handleFormClose} />}
+      {isFormVisible && <SubmitForm onClose={() => setFormVisible(false)} />}
+
       <div className="backdrop-blur-sm p-4 z-10 relative">
         <Nav />
       </div>
+
       <div className="product-card">
         <img
-          src={experience.imageUrl}
-          alt={experience.title}
+          src={exp.imageUrl}
+          alt={exp.title}
           className="product-card__image"
+          loading="lazy"
+          onError={(e) => (e.currentTarget.src = FALLBACK_IMG)}
         />
-        <h1 className="product-card__title">{experience.title}</h1>
+        <h1 className="product-card__title">{exp.title}</h1>
+
         <div className="product-card__description">
           <h2>Description:</h2>
-          <p>{experience.description}</p>
+          <p>{exp.description}</p>
         </div>
-        <div className="product-card__included">
-          <h2>What's Included:</h2>
-          <ul>
-            {experience.included.map((item, index) => (
-              <li key={index}>{item}</li>
-            ))}
-          </ul>
-        </div>
-        <div className="product-card__extras">
-          <h2>Extras:</h2>
-          <ul>
-            {experience.extras.map((item, index) => (
-              <li key={index}>{item}</li>
-            ))}
-          </ul>
-        </div>
-        <div className="product-card__location">
-          <h2>Location:</h2>
-          <p>{experience.location}</p>
-        </div>
+
+        {exp.included.length > 0 && (
+          <div className="product-card__included">
+            <h2>What's Included:</h2>
+            <ul>{exp.included.map((it, i) => <li key={i}>{String(it)}</li>)}</ul>
+          </div>
+        )}
+
+        {exp.extras.length > 0 && (
+          <div className="product-card__extras">
+            <h2>Extras:</h2>
+            <ul>{exp.extras.map((it, i) => <li key={i}>{String(it)}</li>)}</ul>
+          </div>
+        )}
+
+        {exp.location && (
+          <div className="product-card__location">
+            <h2>Location:</h2>
+            <p>{exp.location}</p>
+          </div>
+        )}
+
         <div className="product-card__price">
           <h2>Price:</h2>
-          <p>From ${experience.price}</p>
+          <p>From ${toNumber(exp.price, 0)}</p>
         </div>
-        <div className="product-card__booking">
-          <h2>How to Book:</h2>
-          <p>{experience.booking}</p>
-        </div>
-        <StripeCheckout
-          label='Order'
-          name='DreamyDates'
-          billingAddress
-          shippingAddress
-          description={`Your total is $${experience.price}`}
-          amount={priceForStripe}
-          token={handleToken}
-          stripeKey={publishableKey}
-        >
-          <button className="product-card__order-button">Order</button>
-        </StripeCheckout>
-      </div>
-      <div className="gallery">
-        <h2 className="gallery__title">GALLERY</h2>
-        <div className="gallery__grid">
-          {experience.images.slice(0, 6).map((image, index) => (
-            <div key={index} className="gallery__item">
-              <img src={image} alt={`Gallery item ${index + 1}`} className="gallery__image" />
-            </div>
-          ))}
-        </div>
-        {experience.images.length > 6 && (
-          <button className="gallery__button">MORE PHOTO</button>
+
+        {exp.booking && (
+          <div className="product-card__booking">
+            <h2>How to Book:</h2>
+            <p>{exp.booking}</p>
+          </div>
         )}
-      </div>
-      <div className="video-gallery">
-        <h2 className="video-gallery__title">VIDEO</h2>
-        <div className="video-gallery__grid">
-          {experience.videos.map((video, index) => (
-            <div key={index} className="video-gallery__item">
-              <iframe
-                className="video-gallery__iframe"
-                src={video}
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                title={`Video ${index + 1}`}
-              ></iframe>
-            </div>
-          ))}
-        </div>
-        <button className="video-gallery__button">MORE VIDEO</button>
-      </div>
-      <div className="info-card">
-        <div className="info-card__section">
-          <h2>{experience.title}</h2>
-          <p><strong>This Month price:</strong> {experience.details.thisMonthPrice}</p>
-          <p><strong>Ordered:</strong> {experience.details.ordered} times</p>
-          <p><strong>Duration:</strong> {experience.details.duration}</p>
-          <p>{experience.details.note}</p>
+
+        {publishableKey ? (
           <StripeCheckout
+            label="Order"
             name="DreamyDates"
             billingAddress
             shippingAddress
-            description={`Your total is $${experience.price}`}
-            amount={priceForStripe}
-            panelLabel='Pay Now'
+            description={`Your total is $${toNumber(exp.price, 0)}`}
+            amount={priceCents}
             token={handleToken}
             stripeKey={publishableKey}
           >
-            <button className="info-card__order-button">Order</button>
+            <button className="product-card__order-button">Order</button>
           </StripeCheckout>
+        ) : (
+          <button className="product-card__order-button" disabled title="Payments unavailable">
+            Order
+          </button>
+        )}
+      </div>
+
+      {exp.images.length > 0 && (
+        <div className="gallery">
+          <h2 className="gallery__title">GALLERY</h2>
+          <div className="gallery__grid">
+            {exp.images.slice(0, 6).map((src, i) => (
+              <div key={i} className="gallery__item">
+                <img
+                  src={src}
+                  alt={`Gallery item ${i + 1}`}
+                  className="gallery__image"
+                  loading="lazy"
+                  onError={(e) => (e.currentTarget.src = FALLBACK_IMG)}
+                />
+              </div>
+            ))}
+          </div>
+          {exp.images.length > 6 && (
+            <button className="gallery__button">MORE PHOTO</button>
+          )}
         </div>
-        <div className="info-card__social">
-          {socialLinks.map((link, index) => (
-            <a key={index} href={link.href}>
-              <img src={link.imgSrc} alt={link.alt} />
-            </a>
-          ))}
+      )}
+
+      {exp.videos.length > 0 && (
+        <div className="video-gallery">
+          <h2 className="video-gallery__title">VIDEO</h2>
+          <div className="video-gallery__grid">
+            {exp.videos.map((url, i) => (
+              <div key={i} className="video-gallery__item">
+                <iframe
+                  className="video-gallery__iframe"
+                  src={url}
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  title={`Video ${i + 1}`}
+                />
+              </div>
+            ))}
+          </div>
+          <button className="video-gallery__button">MORE VIDEO</button>
         </div>
+      )}
+
+      <div className="info-card">
+        <div className="info-card__section">
+          <h2>{exp.title}</h2>
+          {exp.details.thisMonthPrice && (
+            <p><strong>This Month price:</strong> {exp.details.thisMonthPrice}</p>
+          )}
+          {exp.details.ordered && (
+            <p><strong>Ordered:</strong> {exp.details.ordered} times</p>
+          )}
+          {exp.details.duration && (
+            <p><strong>Duration:</strong> {exp.details.duration}</p>
+          )}
+          {exp.details.note && <p>{exp.details.note}</p>}
+
+          {publishableKey ? (
+            <StripeCheckout
+              name="DreamyDates"
+              billingAddress
+              shippingAddress
+              description={`Your total is $${toNumber(exp.price, 0)}`}
+              amount={priceCents}
+              panelLabel="Pay Now"
+              token={handleToken}
+              stripeKey={publishableKey}
+            >
+              <button className="info-card__order-button">Order</button>
+            </StripeCheckout>
+          ) : (
+            <button className="info-card__order-button" disabled>
+              Order
+            </button>
+          )}
+        </div>
+
+        {socialLinks.length > 0 && (
+          <div className="info-card__social">
+            {socialLinks.map((s, i) => (
+              <a key={i} href={s.href} target="_blank" rel="noreferrer">
+                <img src={s.imgSrc} alt={s.alt || 'social'} />
+              </a>
+            ))}
+          </div>
+        )}
+
         <div className="info-card__section-order">
           <h2>Need free consultation?</h2>
           <p>We’ll be glad to answer all arising questions!</p>
-          {contactInfo.map((contact, index) => (
-            <p key={index}><strong>{contact.value}</strong></p>
-          ))}
-          <button className="info-card__order-button" onClick={handleFormOpen}>Order</button>
+          {contactInfo.length > 0 &&
+            contactInfo.map((c, i) => <p key={i}><strong>{c.value}</strong></p>)}
+          <button className="info-card__order-button" onClick={() => setFormVisible(true)}>
+            Order
+          </button>
         </div>
       </div>
+
       <Footer />
     </div>
   );
-};
-
-export default ExperiencePage;
+}
