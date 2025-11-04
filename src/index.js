@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+import { HelmetProvider } from 'react-helmet-async';
 // import './index.css';
 // import LogRocket from 'logrocket';
 // LogRocket.init('0eqphi/martik');
@@ -23,9 +24,11 @@ function mount() {
   }
 
   window.__APP_ROOT__.render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
+<React.StrictMode>
+  <HelmetProvider>
+    <App />
+  </HelmetProvider>
+</React.StrictMode>
   );
 }
 

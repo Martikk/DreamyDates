@@ -9,7 +9,7 @@ import Dates from './Pages/Dates/Dates';
 import MarriageProposal from './Pages/MarriageProposal/MarriageProposal';
 import Surprises from './Pages/Surprises/Surprises';
 import { ToastContainer } from 'react-toastify';
-import 'react-toastify/ReactToastify.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
