@@ -1,17 +1,26 @@
+// index.js
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
 import App from './App';
-import LogRocket from 'logrocket';
-import { HelmetProvider } from 'react-helmet-async';
+// (опц.) LogRocket, стили и т.д.
 
-LogRocket.init('0eqphi/martik');
+const container = document.getElementById('root');
+if (!container) throw new Error('No #root element found');
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+// Кладём root в глобал, чтобы не создавать заново при повторном исполнении модуля (HMR/дубликаты)
+let root = window.__APP_ROOT__;
+if (!root) {
+  root = ReactDOM.createRoot(container);
+  window.__APP_ROOT__ = root;
+}
+
 root.render(
   <React.StrictMode>
-    <HelmetProvider>
-      <App />
-    </HelmetProvider>
+    <App />
   </React.StrictMode>
 );
+
+// (Vite) поддержка HMR, безопасно:
+if (import.meta && import.meta.hot) {
+  import.meta.hot.accept();
+}
