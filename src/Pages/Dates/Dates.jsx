@@ -1,3 +1,4 @@
+// src/Pages/Dates/Dates.jsx
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Dates.scss';
@@ -7,7 +8,6 @@ import Nav from '../../Component/Nav';
 import Footer from '../../Component/Footer';
 
 function safeParseCategories(raw) {
-  // Приходит как ["Dates", ...] ИЛИ как '["Dates","..."]' ИЛИ вообще мусор
   try {
     if (Array.isArray(raw)) return raw;
     if (typeof raw === 'string') {
@@ -26,10 +26,8 @@ export default function Dates() {
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState('');
 
-  // Паблик-ключ Stripe можно держать в клиенте
-  const publishableKey = import.meta?.env?.VITE_STRIPE_PUBLISHABLE_KEY
-    || process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY
-    || '';
+  // ✅ CRA-совместимо: без import.meta
+  const publishableKey = process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY || '';
 
   useEffect(() => {
     const ac = new AbortController();
@@ -37,7 +35,7 @@ export default function Dates() {
       setLoading(true);
       setErr('');
       try {
-        // ВАЖНО: идём в серверную функцию — никаких ключей в браузере
+        // /api/* → перекидывается в /.netlify/functions/api по netlify.toml
         const res = await fetch('/api/experiences', { signal: ac.signal });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
@@ -60,7 +58,7 @@ export default function Dates() {
 
   const handleToken = (token, addresses) => {
     console.log('Stripe token:', token, addresses);
-    alert('Payment Successful'); // под реальный backend webhook — позже
+    alert('Payment Successful'); // TODO: заменить на реальный backend вызов
   };
 
   const grid = useMemo(() => (
