@@ -19,7 +19,7 @@ function App() {
         <Route path="/experience/:id" element={<ExperiencePage />} />
         <Route path="/flowers" element={<Flowers />} />
         <Route path="/dates" element={<Dates />} />
-        <Route path="/marriage-proposal" element={<MarriageProposal />} />
+        <Route path="/MarriageProposal" element={<MarriageProposal />} />
         <Route path="/surprises" element={<Surprises />} />
         <Route path="/contact-us" element={<Contact />} />
         <Route path="*" element={<NotFoundPage />} />
